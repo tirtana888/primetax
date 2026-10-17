@@ -1,0 +1,14 @@
+{
+  "_comment": "TODO: diverifikasi tim pajak sebelum rilis produksi",
+  "source": "PMK Nomor 172 Tahun 2023 tentang Penerapan Prinsip Kewajaran dan Kelaziman Usaha dalam Transaksi yang Dipengaruhi Hubungan Istimewa",
+  "effectiveFrom": "2023-12-29",
+  "reviewedBy": "[NAMA REVIEWER PAJAK — TODO: diverifikasi tim pajak]",
+  "reviewedAt": "[TANGGAL REVIEW]",
+  "thresholds": {
+    "previousYearGrossRevenue": 50000000000,
+    "affiliatedTangibleGoodsTransaction": 20000000000,
+    "affiliatedServicesInterestRoyaltyOther": 5000000000,
+    "consolidatedGroupRevenueCbcr": 11000000000000
+  },
+  "availabilityDeadlineMonthsAfterFiscalYearEnd": 4
+}

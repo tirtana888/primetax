@@ -1,0 +1,168 @@
+{
+  "annualDiscountPercent": "[X]",
+  "warrantyNote": "[KEBIJAKAN GARANSI — KONFIRMASI]: Jika kami terlambat melapor karena kelalaian kami, denda administrasinya kami tanggung.",
+  "packages": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "target": "Usaha baru / non-PKP, ≤ [X] karyawan",
+      "monthlyPrice": "[HARGA STARTER]",
+      "annualPrice": "[HARGA STARTER TAHUNAN]",
+      "popular": false,
+      "description": "Kepatuhan bulanan dasar dan SPT Tahunan untuk usaha rintisan yang belum PKP.",
+      "features": [
+        "Lapor SPT Masa PPh 21 & PPh Final UMKM / PPh 23",
+        "Penyusunan & pelaporan SPT Tahunan Badan/OP",
+        "Pengingat tenggat setor & lapor tiap bulan",
+        "Konsultasi pajak via WhatsApp (jam kerja)",
+        "Pendampingan aktivasi & dasar Coretax"
+      ],
+      "footnote": "Belum termasuk PPN. Untuk transaksi ≤ [X] bukti potong/bulan."
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "target": "Usaha PKP aktif & bertumbuh",
+      "monthlyPrice": "[HARGA GROWTH]",
+      "annualPrice": "[HARGA GROWTH TAHUNAN]",
+      "popular": true,
+      "badge": "Paling populer",
+      "description": "Pengelolaan pajak lengkap termasuk PPN, e-Faktur Coretax, dan rekonsiliasi bulanan.",
+      "features": [
+        "Semua fitur dalam paket Starter",
+        "Pengelolaan PPN & administrasi e-Faktur Coretax",
+        "Rekonsiliasi fiskal bulanan sederhana (omzet vs PPN)",
+        "1× sesi review call bulanan (30 menit)",
+        "Review kontrak kerja/vendor dari sisi pemotongan pajak"
+      ],
+      "footnote": "Belum termasuk PPN. Untuk transaksi ≤ [X] faktur keluaran/bulan."
+    },
+    {
+      "id": "audit-ready",
+      "name": "Audit Ready",
+      "target": "Usaha dengan volume tinggi / berisiko diperiksa",
+      "monthlyPrice": "[HARGA AUDIT READY]",
+      "annualPrice": "[HARGA AUDIT READY TAHUNAN]",
+      "popular": false,
+      "description": "Kepatuhan penuh ditambah pemeriksaan kesehatan pajak dan pendampingan SP2DK.",
+      "features": [
+        "Semua fitur dalam paket Growth",
+        "Pendampingan penyusunan tanggapan SP2DK",
+        "Tax health check / diagnostic review tahunan",
+        "Rekonsiliasi ekualisasi PPh Badan vs PPN vs PPh Potput",
+        "Prioritas respons WhatsApp & PIC konsultan senior"
+      ],
+      "footnote": "Belum termasuk PPN. Lingkup sengketa pemeriksaan penuh mengacu pada adendum."
+    }
+  ],
+  "comparison": [
+    {
+      "feature": "Lapor SPT Masa PPh 21 & PPh Final/23",
+      "starter": true,
+      "growth": true,
+      "auditReady": true
+    },
+    {
+      "feature": "SPT Tahunan Badan / Orang Pribadi",
+      "starter": true,
+      "growth": true,
+      "auditReady": true
+    },
+    {
+      "feature": "Pengingat tenggat pajak bulanan",
+      "starter": true,
+      "growth": true,
+      "auditReady": true
+    },
+    {
+      "feature": "Konsultasi via WhatsApp (jam kerja)",
+      "starter": "Standar",
+      "growth": "Standar",
+      "auditReady": "Prioritas"
+    },
+    {
+      "feature": "Pengelolaan PPN & e-Faktur Coretax",
+      "starter": false,
+      "growth": true,
+      "auditReady": true
+    },
+    {
+      "feature": "Rekonsiliasi pajak bulanan",
+      "starter": false,
+      "growth": "Sederhana",
+      "auditReady": "Ekualisasi lengkap"
+    },
+    {
+      "feature": "Review call bulanan bersama konsultan",
+      "starter": false,
+      "growth": "1× / bulan",
+      "auditReady": "2× / bulan"
+    },
+    {
+      "feature": "Tax health check / diagnostic review tahunan",
+      "starter": false,
+      "growth": false,
+      "auditReady": true
+    },
+    {
+      "feature": "Pendampingan klarifikasi SP2DK",
+      "starter": false,
+      "growth": false,
+      "auditReady": true
+    }
+  ],
+  "addons": [
+    {
+      "name": "Pendirian PT Perorangan + NPWP Badan",
+      "priceFrom": "Rp [HARGA ADDON PT PERORANGAN]",
+      "unit": "per pengajuan"
+    },
+    {
+      "name": "Pendirian PT Umum / CV + Perizinan NIB OSS",
+      "priceFrom": "Rp [HARGA ADDON PT UMUM]",
+      "unit": "per akta & NIB"
+    },
+    {
+      "name": "Pengukuhan PKP & Setup Coretax Perusahaan",
+      "priceFrom": "Rp [HARGA ADDON PKP]",
+      "unit": "sekali bayar"
+    },
+    {
+      "name": "Pembetulan SPT Tahunan / Masa Tahun Sebelumnya",
+      "priceFrom": "Rp [HARGA ADDON PEMBETULAN]",
+      "unit": "per masa / tahun"
+    },
+    {
+      "name": "Pendampingan Restitusi PPN / PPh",
+      "priceFrom": "Mulai Rp [HARGA ADDON RESTITUSI]",
+      "unit": "sesuai lingkup"
+    },
+    {
+      "name": "Pelatihan In-House Coretax untuk Staf Finance",
+      "priceFrom": "Rp [HARGA ADDON PELATIHAN]",
+      "unit": "per sesi (2 jam)"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Apakah harga paket di atas sudah tetap atau bisa berubah?",
+      "answer": "Harga yang tertera adalah harga mulai dari (starting price) untuk volume transaksi standar UKM. Setelah konsultasi gratis 30 menit, kami akan mengirimkan penawaran tertulis yang pasti sesuai jumlah karyawan dan rata-rata faktur per bulan—tanpa biaya tersembunyi."
+    },
+    {
+      "question": "Berapa lama masa kontrak minimum untuk paket bulanan UKM?",
+      "answer": "Kontrak minimum adalah [X] bulan agar proses perapihan administrasi dan rekonsiliasi berjalan optimal. Anda dapat memilih pembayaran bulanan atau tahunan (hemat [X]%)."
+    },
+    {
+      "question": "Apa saja dokumen yang perlu saya siapkan setiap bulan?",
+      "answer": "Cukup mutasi rekening bisnis, rekap penjualan/invoice, bukti pengeluaran, dan daftar gaji karyawan. Tim kami menyediakan template sederhana dan memandu staf Anda lewat WhatsApp."
+    },
+    {
+      "question": "Bagaimana jika perusahaan saya sudah telanjur menerima surat SP2DK?",
+      "answer": "Anda dapat langsung mengambil paket Audit Ready atau layanan pendampingan SP2DK terpisah. Tim kami akan memeriksa isi surat dan membantu menyusun draf tanggapan sebelum tenggat 14 hari."
+    },
+    {
+      "question": "Apakah paket UKM sudah mencakup biaya pajak yang disetor ke negara?",
+      "answer": "Belum. Biaya paket adalah jasa profesional konsultan pajak. Pembayaran pajak terutang (PPh/PPN) tetap disetorkan langsung dari rekening perusahaan Anda ke kas negara menggunakan kode billing resmi."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "title": "[NAMA PENGHARGAAN / AFILIASI 1]",
+    "issuer": "[PENERBIT PENGHARGAAN, mis. ITR World Tax]",
+    "year": 2026,
+    "category": "Transfer Pricing & Tax Controversy",
+    "logo": "[LOGO PENGHARGAAN 2026]",
+    "url": "#"
+  },
+  {
+    "title": "[NAMA PENGHARGAAN / AFILIASI 2]",
+    "issuer": "[PENERBIT PENGHARGAAN]",
+    "year": 2025,
+    "category": "Recommended Tax Practice Indonesia",
+    "logo": "[LOGO PENGHARGAAN 2025]",
+    "url": "#"
+  },
+  {
+    "title": "[NAMA PENGHARGAAN / AFILIASI 3]",
+    "issuer": "[ASOSIASI RESMI, mis. IKPI]",
+    "year": 2024,
+    "category": "Anggota Terdaftar & Bersertifikat",
+    "logo": "[LOGO AFILIASI 2024]",
+    "url": "#"
+  },
+  {
+    "title": "[PENGHARGAAN LAMA > 3 TAHUN — OTOMATIS DISEMBUNYIKAN]",
+    "issuer": "[PENERBIT]",
+    "year": 2020,
+    "category": "Arsip Lama",
+    "logo": "[LOGO 2020]",
+    "url": "#"
+  }
+]

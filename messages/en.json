@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "skipToContent": "Skip to main content",
+    "services": "Services",
+    "smePricing": "SME Pricing",
+    "caseStudies": "Case Studies",
+    "insight": "Insights",
+    "freeTools": "Free Tools",
+    "about": "About",
+    "aboutUs": "About Us",
+    "team": "Our Team",
+    "career": "Careers",
+    "requestProposal": "Request Proposal",
+    "freeConsultation": "Contact Us",
+    "forWho": "Who We Serve",
+    "forCorporate": "Corporate & Foreign Investment (PMA)",
+    "forSme": "SMEs & Startups"
+  },
+  "cta": {
+    "smePrimary": "Free 30-Minute Consultation via WhatsApp",
+    "smeSecondary": "View Packages from IDR [HARGA STARTER]/month",
+    "corporatePrimary": "Request Proposal",
+    "corporateSecondary": "Download Company Profile",
+    "corporateSoft": "Discuss your case with a senior advisor",
+    "viewAllServices": "View all services →",
+    "viewAllCaseStudies": "View all case studies →",
+    "meetOurTeam": "Meet our team →",
+    "readMore": "Read more →",
+    "learnMore": "Learn more →",
+    "useFree": "Use for free"
+  },
+  "footer": {
+    "newsletterTitle": "Monthly tax bulletin: regulatory summary + 3 key actions each month.",
+    "newsletterPlaceholder": "Your work email",
+    "newsletterButton": "Subscribe",
+    "servicesCol": "Services",
+    "forBusinessCol": "For Business",
+    "resourcesCol": "Resources",
+    "companyCol": "Company",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "disclaimer": "Disclaimer"
+  }
+}
