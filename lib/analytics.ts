@@ -1,89 +1,59 @@
-export type AnalyticsEventName =
-  | "whatsapp_click"
-  | "form_start"
-  | "form_submit"
-  | "rfp_step_complete"
-  | "rfp_submit"
-  | "booking_scheduled"
-  | "company_profile_download"
-  | "newsletter_signup"
-  | "lead_magnet_download"
-  | "tool_used"
-  | "pricing_toggle"
-  | "package_cta_click";
+/**
+ * Consent-aware analytics helpers.
+ *
+ * Events are always queued on window.__primetaxEvents (useful in development)
+ * and forwarded to GA4 / dataLayer only after the visitor has accepted
+ * analytics cookies. See components/layout/ConsentBanner.tsx.
+ */
 
-export interface CookieConsentState {
-  necessary: boolean;
+export type AnalyticsEventName = "cta_click" | "form_start" | "form_submit" | "form_error";
+
+export interface CookieConsent {
   analytics: boolean;
-  marketing: boolean;
   updatedAt: string;
 }
 
-const CONSENT_STORAGE_KEY = "primetax_cookie_consent_v1";
+const CONSENT_KEY = "primetax_consent_v2";
+export const CONSENT_EVENT = "primetax-consent-updated";
 
-export function getCookieConsent(): CookieConsentState | null {
+export function getConsent(): CookieConsent | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = window.localStorage.getItem(CONSENT_STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as CookieConsentState;
+    const raw = window.localStorage.getItem(CONSENT_KEY);
+    return raw ? (JSON.parse(raw) as CookieConsent) : null;
   } catch {
     return null;
   }
 }
 
-export function setCookieConsent(consent: Omit<CookieConsentState, "necessary" | "updatedAt">) {
+export function setConsent(analytics: boolean) {
   if (typeof window === "undefined") return;
-  const fullState: CookieConsentState = {
-    necessary: true,
-    analytics: consent.analytics,
-    marketing: consent.marketing,
-    updatedAt: new Date().toISOString(),
-  };
+  const state: CookieConsent = { analytics, updatedAt: new Date().toISOString() };
   try {
-    window.localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(fullState));
-    window.dispatchEvent(new CustomEvent("cookie-consent-updated", { detail: fullState }));
+    window.localStorage.setItem(CONSENT_KEY, JSON.stringify(state));
   } catch {
-    // ignore storage errors
+    // Storage may be unavailable (private mode); consent then lasts for the page view.
   }
+  window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: state }));
 }
 
-/**
- * Melacak event analytics sesuai §10.7.
- * Hanya mengirim ke layer analitik eksternal jika pengguna telah menyetujui cookie analitik (§11.4).
- */
+type AnalyticsWindow = Window & {
+  __primetaxEvents?: Record<string, unknown>[];
+  gtag?: (...args: unknown[]) => void;
+};
+
 export function trackEvent(
   event: AnalyticsEventName,
   params: Record<string, string | number | boolean | undefined> = {}
 ) {
   if (typeof window === "undefined") return;
+  const w = window as AnalyticsWindow;
+  const payload = { event, page_path: window.location.pathname, ...params };
 
-  const consent = getCookieConsent();
-  const payload = {
-    event,
-    timestamp: new Date().toISOString(),
-    page_path: window.location.pathname,
-    ...params,
-  };
-
-  // Debug log untuk inspeksi E2E / development
-  if (process.env.NODE_ENV !== "production") {
-    console.debug("[Analytics Event]", payload, { analyticsConsent: Boolean(consent?.analytics) });
-  }
-
-  // Simpan di buffer debug window agar dapat diverifikasi di E2E test
-  const w = window as unknown as { __primetaxEvents?: Array<Record<string, unknown>> };
   w.__primetaxEvents = w.__primetaxEvents || [];
   w.__primetaxEvents.push(payload);
+  if (process.env.NODE_ENV !== "production") console.debug("[analytics]", payload);
 
-  if (!consent?.analytics) {
-    return;
-  }
-
-  const winWithDataLayer = window as unknown as {
-    dataLayer?: Array<Record<string, unknown>>;
-  };
-  if (Array.isArray(winWithDataLayer.dataLayer)) {
-    winWithDataLayer.dataLayer.push(payload);
-  }
+  if (!getConsent()?.analytics) return;
+  w.gtag?.("event", event, params);
 }

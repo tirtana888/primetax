@@ -1,96 +1,41 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
+import { events } from "@/content/events";
+import { getPublishedInsights } from "@/content/insights";
+import { landingPages } from "@/content/landing-pages";
 import { services } from "@/content/services";
-import { caseStudies } from "@/content/case-studies";
-import { insightArticles } from "@/content/insights";
-import { teamMembers } from "@/content/team";
+import { localizePath, locales } from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
+/** Every page in both languages, each entry listing its hreflang alternates. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = site.url;
-  const now = new Date();
-
-  const staticRoutes = [
-    "",
-    "/korporasi",
-    "/ukm",
-    "/layanan",
-    "/harga",
-    "/studi-kasus",
-    "/insight",
-    "/insight/kategori/update-regulasi",
-    "/insight/kategori/panduan-praktis",
-    "/insight/buletin",
-    "/tools",
-    "/tools/kalender-pajak",
-    "/tools/kalkulator-pph-21",
-    "/tools/kalkulator-ppn",
-    "/tools/cek-wajib-tp-doc",
-    "/tentang",
-    "/tim",
-    "/karier",
-    "/kontak",
-    "/minta-proposal",
-    "/company-profile",
-    "/kebijakan-privasi",
-    "/syarat-ketentuan",
-    "/disclaimer",
-    "/en",
-    "/en/corporate",
-    "/en/services",
-    "/en/request-proposal",
-    "/en/contact",
+  const pages: { path: string; priority: number; lastModified?: string }[] = [
+    { path: "/", priority: 1 },
+    { path: "/services", priority: 0.9 },
+    ...services.map((s) => ({ path: `/services/${s.slug}`, priority: 0.9 })),
+    ...landingPages.map((p) => ({ path: `/solutions/${p.slug}`, priority: 0.8 })),
+    { path: "/about", priority: 0.7 },
+    { path: "/industries", priority: 0.7 },
+    { path: "/insights", priority: 0.8 },
+    ...getPublishedInsights().map((i) => ({ path: `/insights/${i.slug}`, priority: 0.7, lastModified: i.updatedAt })),
+    ...(events.length > 0 ? [{ path: "/events", priority: 0.6 }] : []),
+    { path: "/team", priority: 0.5 },
+    { path: "/contact", priority: 0.7 },
+    { path: "/book-consultation", priority: 0.8 },
+    { path: "/privacy-policy", priority: 0.2 },
+    { path: "/terms", priority: 0.2 },
+    { path: "/disclaimer", priority: 0.2 },
   ];
 
-  const entries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: now,
-    changeFrequency: route === "" || route === "/insight" ? "daily" : "weekly",
-    priority: route === "" ? 1.0 : 0.8,
-  }));
-
-  for (const svc of services) {
-    entries.push({
-      url: `${baseUrl}/layanan/${svc.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    });
-    entries.push({
-      url: `${baseUrl}/en/services/${svc.enSlug}`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    });
-  }
-
-  for (const cs of caseStudies) {
-    entries.push({
-      url: `${baseUrl}/studi-kasus/${cs.slug}`,
-      lastModified: new Date(cs.publishedAt),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    });
-  }
-
-  for (const art of insightArticles) {
-    entries.push({
-      url: `${baseUrl}/insight/${art.slug}`,
-      lastModified: new Date(art.updatedAt),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    });
-  }
-
-  for (const member of teamMembers) {
-    entries.push({
-      url: `${baseUrl}/tim/${member.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    });
-  }
-
-  return entries;
+  return pages.flatMap(({ path, priority, lastModified }) =>
+    locales.map((locale) => ({
+      url: `${site.url}${localizePath(path, locale)}`,
+      lastModified: lastModified ? new Date(lastModified) : new Date(),
+      priority,
+      alternates: {
+        languages: Object.fromEntries(locales.map((l) => [l, `${site.url}${localizePath(path, l)}`])),
+      },
+    }))
+  );
 }
