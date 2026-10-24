@@ -1,69 +1,37 @@
-import type { Metadata } from "next";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
-import { site } from "@/config/site";
+import { LegalPage } from "@/components/blocks/LegalPage";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: `Disclaimer Informasi Perpajakan — ${site.brandName}`,
-  description: `Sanggahan (disclaimer) atas informasi artikel, studi kasus, dan kalkulator pajak di situs ${site.brandName}.`,
-  alternates: {
-    canonical: "/disclaimer",
-  },
-};
+export const metadata = pageMetadata({
+  title: "Professional Disclaimer",
+  description: "Professional disclaimer for information published on the PrimeTax website.",
+  path: "/disclaimer",
+});
 
 export default function DisclaimerPage() {
   return (
-    <section className="bg-white pt-6 pb-16 lg:pb-24">
-      <div className="container-prose">
-        <Breadcrumb
-          items={[
-            { label: "Beranda", href: "/" },
-            { label: "Disclaimer" },
-          ]}
-        />
-
-        <h1 className="mt-6 font-heading text-h1 font-bold text-navy-900">
-          Disclaimer (Sanggahan)
-        </h1>
-        <p className="mt-3 text-caption text-ink-500">
-          Berlaku efektif: 17 Oktober 2026 · {site.legalName}
-        </p>
-
-        <div className="mt-8 space-y-6 text-body text-ink-900">
-          <h2 className="font-heading text-h3 font-bold text-navy-900">
-            1. Bukan Nasihat Pajak untuk Kasus Spesifik
-          </h2>
-          <p>
-            Seluruh artikel Insight, buletin bulanan, daftar periksa
-            (checklist), dan materi informasi di situs {site.brandName} disusun
-            sebagai informasi umum berdasarkan peraturan perpajakan yang berlaku
-            pada tanggal penerbitannya. Materi tersebut tidak dimaksudkan
-            sebagai pengganti konsultasi atau opini pajak tertulis atas fakta
-            transaksi spesifik perusahaan Anda.
-          </p>
-
-          <h2 className="font-heading text-h3 font-bold text-navy-900">
-            2. Tidak Ada Jaminan Hasil Sengketa
-          </h2>
-          <p>
-            Sesuai kode etik profesi konsultan pajak dan kuasa hukum Pengadilan
-            Pajak, {site.brandName} tidak pernah menjanjikan atau menjamin hasil
-            akhir dari proses SP2DK, Pemeriksaan Pajak, Keberatan, maupun
-            Banding di Pengadilan Pajak. Studi kasus yang ditampilkan di situs
-            ini merupakan ilustrasi hasil faktual masa lalu yang sangat
-            bergantung pada kelengkapan dokumen dan fakta hukum masing-masing
-            perkara.
-          </p>
-
-          <h2 className="font-heading text-h3 font-bold text-navy-900">
-            3. Estimasi Kalkulator &amp; Kalender Pajak
-          </h2>
-          <p>
-            Hasil perhitungan pada Kalkulator PPh 21, Kalkulator PPN, dan Kuis
-            TP Doc bersifat estimasi awal. Pastikan selalu mengonfirmasi
-            perhitungan akhir sebelum melakukan penyetoran dan pelaporan SPT.
-          </p>
-        </div>
-      </div>
-    </section>
+    <LegalPage title="Professional Disclaimer" path="/disclaimer" updated="2026-10-24">
+      <p>
+        Articles, insights, and other content on this website are published for general information only. They reflect
+        our understanding of regulations in force at the date of last review and may not reflect later changes.
+      </p>
+      <p>
+        Content is not tax, legal, accounting, or investment advice and must not be relied on for any specific matter.
+        Tax outcomes depend on specific facts, documentation, implementation, and the position taken by the tax
+        authority or court.
+      </p>
+      <p>
+        PrimeTax does not guarantee tax savings, the absence of tax risk, or the outcome of any audit, objection,
+        appeal, or other dispute. Professional advice is provided only under a signed engagement letter that sets out
+        the agreed scope, assumptions, and limitations.
+      </p>
+      <p>
+        References to regulations are summaries. Please refer to the official texts published by the relevant Indonesian
+        authorities.
+      </p>
+      <p>
+        PrimeTax is an independent advisory firm and is not affiliated with, or endorsed by, the Directorate General of
+        Taxes or any other government authority.
+      </p>
+    </LegalPage>
   );
 }

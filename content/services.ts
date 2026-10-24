@@ -1,997 +1,585 @@
-export type ServiceSegment = "ukm" | "korporasi" | "both";
-export type ServiceCtaMode = "sme" | "dual" | "corporate";
+/**
+ * Core service categories (Brief §6) rendered by the service page template
+ * (Brief §8) at /services/[slug].
+ *
+ * Only publish services PrimeTax can deliver directly or through clearly
+ * defined, appropriately qualified partners. Items flagged `confirm: true`
+ * are hidden until the capability has been confirmed.
+ */
 
-export interface ServiceItem {
+export type ServiceIcon = "advisory" | "international" | "transfer-pricing" | "controversy";
+
+export interface ServiceCategory {
   slug: string;
-  enSlug: string;
+  number: string;
+  icon: ServiceIcon;
   title: string;
-  enTitle: string;
-  shortDescription: string;
-  enShortDescription: string;
-  lead: string;
-  enLead: string;
-  icon:
-    | "calendar-check"
-    | "file-search"
-    | "scale"
-    | "receipt"
-    | "arrow-left-right"
-    | "globe-2"
-    | "clipboard-list"
-    | "shield-check"
-    | "building-2"
-    | "monitor-check";
-  segment: ServiceSegment;
-  ctaMode: ServiceCtaMode;
-  isMvpCore: boolean;
-  whoFor: string[];
-  enWhoFor: string[];
-  commonProblems: Array<{ title: string; description: string }>;
+  cardSummary: string;
+  headline: string;
+  valueProposition: string;
+  ctaLabel: string;
+  situations: { title: string; description: string }[];
+  scope: { title: string; description: string; confirm?: boolean }[];
   deliverables: string[];
-  enDeliverables: string[];
-  processSteps: Array<{ step: string; duration: string; description: string }>;
-  showDisputeDiagram?: boolean;
-  faqs: Array<{ question: string; answer: string }>;
-  tags: string[];
+  process: { title: string; description: string }[];
+  considerations: { title: string; description: string }[];
+  faqs: { question: string; answer: string }[];
+  relatedServices: string[];
+  relatedInsights: string[];
+  seo: { title: string; description: string };
 }
 
-export const services: ServiceItem[] = [
+export const services: ServiceCategory[] = [
   {
-    slug: "kepatuhan-pajak",
-    enSlug: "tax-compliance",
-    title: "Kepatuhan pajak bulanan & tahunan",
-    enTitle: "Monthly & annual tax compliance",
-    shortDescription:
-      "Penyusunan dan pelaporan SPT Masa PPh 21/23/4(2), PPN, e-Faktur Coretax, hingga SPT Tahunan badan dan orang pribadi tepat waktu.",
-    enShortDescription:
-      "Timely preparation and filing of monthly withholding taxes, VAT/Coretax e-Invoices, and annual corporate & individual tax returns.",
-    lead: "Pastikan seluruh kewajiban SPT Masa dan SPT Tahunan perusahaan Anda dihitung dengan teliti, direkonsiliasi dengan laporan keuangan, dan dilaporkan tepat waktu di sistem Coretax.",
-    enLead:
-      "Ensure all monthly and annual tax obligations are accurately calculated, reconciled with financial statements, and filed on time via the Coretax administration system.",
-    icon: "calendar-check",
-    segment: "both",
-    ctaMode: "sme",
-    isMvpCore: true,
-    whoFor: [
-      "UKM dan startup yang ingin urusan pajak bulanan beres tanpa harus merekrut staf pajak penuh waktu",
-      "Perusahaan menengah dan korporasi yang membutuhkan review kepatuhan senior sebelum SPT dilaporkan",
-      "Wajib pajak PKP yang membutuhkan pengelolaan e-Faktur dan rekonsiliasi PPN rutin di Coretax",
-      "Pemilik usaha dan direksi yang membutuhkan penyusunan SPT Tahunan Badan & OP yang rapi",
-    ],
-    enWhoFor: [
-      "SMEs and startups seeking reliable monthly tax compliance without hiring a full-time tax team",
-      "Mid-sized and corporate entities requiring senior review prior to monthly and annual tax filings",
-      "VAT-registered businesses (PKP) managing high-volume Coretax e-Invoices and reconciliations",
-      "Business owners and directors needing accurate Corporate and Individual Annual Tax Returns",
-    ],
-    commonProblems: [
+    slug: "tax-advisory",
+    number: "01",
+    icon: "advisory",
+    title: "Tax Advisory",
+    cardSummary:
+      "Structured review, planning, and written opinions that help management understand tax positions before material decisions are made.",
+    headline: "Corporate Tax Advisory for Decisions That Matter",
+    valueProposition:
+      "Understand the tax implications of business decisions, evaluate available options, and document the reasoning behind material tax positions.",
+    ctaLabel: "Request a Tax Risk Diagnostic",
+    situations: [
       {
-        title: "Sering terlambat setor atau lapor karena tenggat terlewat",
+        title: "A material transaction is being negotiated",
         description:
-          "Keterlambatan pelaporan SPT Masa maupun Tahunan menimbulkan sanksi administrasi denda dan bunga yang seharusnya bisa dicegah.",
+          "Contract terms, payment flows, and entity choices can change the tax outcome. Management needs the implications before signing, not after.",
       },
       {
-        title: "Selisih omzet laporan laba rugi dengan SPT Masa PPN",
+        title: "Tax positions rely on interpretation",
         description:
-          "Ketidakcocokan antara peredaran usaha di SPT PPh Badan dan penyerahan PPN menjadi pemicu utama diterbitkannya SP2DK oleh kantor pajak.",
+          "Some positions depend on how regulations are read. Finance teams need a documented basis that can be explained to auditors, boards, and the tax office.",
       },
       {
-        title: "Kendala teknis saat beralih ke sistem Coretax & perhitungan TER PPh 21",
+        title: "Uncertainty about historical exposure",
         description:
-          "Perubahan skema pemotongan PPh 21 TER dan administrasi bukti potong unifikasi di Coretax sering membuat tim finance kewalahan.",
+          "Differences between commercial reporting and tax filings, or changes in business model, can create exposure that has not yet been quantified.",
+      },
+      {
+        title: "Governance expectations are rising",
+        description:
+          "Boards and regional headquarters increasingly expect a clear framework for how tax risk is identified, escalated, and decided.",
+      },
+    ],
+    scope: [
+      {
+        title: "Tax Health Check",
+        description:
+          "A focused diagnostic of key tax areas to identify potential exposure, documentation gaps, and priorities for attention.",
+      },
+      {
+        title: "Corporate Tax Review",
+        description:
+          "Review of corporate income tax, VAT, and withholding tax positions against supporting records and applicable regulations.",
+      },
+      {
+        title: "Tax Planning",
+        description:
+          "Evaluation of lawful options for structuring transactions and operations, with the risks and assumptions of each option set out clearly.",
+      },
+      {
+        title: "Tax Opinion and Second Opinion",
+        description:
+          "Written analysis of a specific tax question, including facts relied on, regulatory basis, interpretation, and limitations.",
+      },
+      {
+        title: "Tax Risk Assessment",
+        description:
+          "Identification and prioritisation of tax risks by likelihood and potential impact, presented in a format management can act on.",
+      },
+      {
+        title: "Tax Governance",
+        description:
+          "Design or review of tax policies, roles, controls, and escalation procedures appropriate to the size and complexity of the group.",
       },
     ],
     deliverables: [
-      "Perhitungan dan draf SPT Masa PPh Pasal 21/26 (skema TER & rekonsiliasi masa Desember)",
-      "Perhitungan dan draf SPT Masa PPh Unifikasi (Pasal 23, 4 ayat 2, 15, 26)",
-      "Administrasi e-Faktur Keluaran/Masukan dan pelaporan SPT Masa PPN di Coretax",
-      "Kertas kerja ekualisasi fiskal bulanan (peredaran usaha vs PPN vs objek PPh potong/pungut)",
-      "Kertas kerja rekonsiliasi fiskal tahunan dan penyusunan SPT Tahunan PPh Badan / OP",
-      "Pembuatan kode billing resmi dan pengingat tenggat pembayaran setiap bulan",
+      "Executive summary of key findings and decisions required",
+      "Tax risk register with priority ratings",
+      "Written advisory memorandum or tax opinion",
+      "Options analysis with assumptions and limitations",
+      "Recommended action plan and responsibilities",
     ],
-    enDeliverables: [
-      "Monthly Article 21/26 employee withholding tax calculation (TER & December reconciliation)",
-      "Unified monthly withholding tax returns (Articles 23, 4(2), 15, 26)",
-      "Coretax e-Invoice administration and monthly VAT return preparation",
-      "Monthly fiscal equalization working papers (revenue vs. VAT vs. withholding objects)",
-      "Annual corporate fiscal reconciliation and Corporate/Individual Annual Tax Return filing",
-      "Official tax billing code generation and proactive deadline reminders",
+    process: [
+      {
+        title: "Understand",
+        description: "Clarify the business question, the decision timeline, and the agreed scope of review.",
+      },
+      {
+        title: "Assess",
+        description: "Review facts, contracts, filings, and records against applicable regulations.",
+      },
+      {
+        title: "Advise",
+        description: "Present findings, options, and risks in writing, with a clear recommendation where appropriate.",
+      },
+      {
+        title: "Support",
+        description: "Assist with agreed implementation steps or follow-up questions from management and auditors.",
+      },
     ],
-    processSteps: [
+    considerations: [
       {
-        step: "Tanggal 1–5 setiap bulan: Pengumpulan data",
-        duration: "3–5 hari kerja",
+        title: "Regulatory change",
         description:
-          "Tim kami mengingatkan dan menerima rekap transaksi, invoice, mutasi bank, dan daftar gaji melalui folder kerja aman atau WhatsApp.",
+          "Indonesian tax rules have changed significantly since the Harmonisation of Tax Regulations Law (UU HPP, Law No. 7 of 2021) and the move to the Coretax administration system. Positions taken under earlier rules may need to be revisited.",
       },
       {
-        step: "Tanggal 6–12: Perhitungan, rekonsiliasi & kode billing",
-        duration: "4–5 hari kerja",
+        title: "Documentation matters as much as the position",
         description:
-          "Kami menyusun kertas kerja perhitungan pajak, melakukan pengecekan silang dua lapis, dan mengirimkan rekap pajak terutang beserta kode billing untuk Anda setorkan sebelum tanggal 15.",
+          "A defensible position depends on contemporaneous documentation of facts and reasoning, not only on the conclusion reached.",
       },
       {
-        step: "Tanggal 15–20 (dan akhir bulan untuk PPN): Pelaporan SPT",
-        duration: "Tepat sebelum tenggat",
+        title: "Planning must have commercial substance",
         description:
-          "Setelah bukti setor diterima, kami menyelesaikan pelaporan SPT Masa di Coretax dan mengirimkan arsip BPE (Bukti Penerimaan Elektronik) lengkap.",
-      },
-      {
-        step: "Kuartal I setiap tahun: Penyusunan SPT Tahunan",
-        duration: "2–4 minggu",
-        description:
-          "Menyusun koreksi fiskal atas laporan keuangan tahunan dan melaporkan SPT Tahunan sebelum 31 Maret (OP) atau 30 April (Badan).",
+          "Tax planning is evaluated against the commercial purpose of an arrangement. Options that lack substance carry heightened risk and are not recommended.",
       },
     ],
     faqs: [
       {
-        question: "Apakah pembayaran pajak dilakukan lewat rekening PrimeTax?",
+        question: "What is the difference between a Tax Health Check and a Corporate Tax Review?",
         answer:
-          "Tidak. Demi keamanan dan tata kelola yang benar, kami hanya menerbitkan kode billing resmi DJP. Penyetoran pajak dilakukan langsung dari rekening perusahaan Anda ke kas negara.",
+          "A Tax Health Check is a focused diagnostic designed to identify priority areas quickly. A Corporate Tax Review goes deeper into selected taxes and periods, testing positions against records and regulations. Many clients start with a Health Check and then scope a review of the areas it highlights.",
       },
       {
-        question: "Bagaimana jika laporan keuangan bulanan usaha saya belum rapi?",
+        question: "Can PrimeTax provide a second opinion on advice from another advisor?",
         answer:
-          "Tim kami dapat membantu merapikan rekapitulasi omzet dan biaya dasar untuk keperluan perhitungan pajak, atau berkoordinasi langsung dengan staf pembukuan Anda.",
+          "Yes. A second opinion reviews the facts, assumptions, and regulatory basis of an existing position and states whether we agree, disagree, or see additional risks. We will ask to see the original analysis and the underlying facts.",
       },
       {
-        question: "Apakah layanan ini sudah mendukung sistem Coretax terbaru?",
+        question: "Do you guarantee tax savings?",
         answer:
-          "Ya, seluruh alur administrasi bukti potong, e-Faktur, hingga pelaporan SPT Masa dan Tahunan kami jalankan sesuai ketentuan Coretax DJP terbaru.",
-      },
-      {
-        question: "Berapa biaya untuk layanan kepatuhan bulanan?",
-        answer:
-          "Untuk UKM, tersedia paket transparan mulai Rp [HARGA STARTER]/bulan. Untuk korporasi dengan volume transaksi tinggi, kami menyusun proposal sesuai lingkup kerja.",
+          "No. We evaluate lawful options and explain their risks and assumptions so management can make an informed decision. Outcomes depend on facts, implementation, and the position taken by the tax authority.",
       },
     ],
-    tags: ["kepatuhan", "spt", "pph-21", "ppn", "coretax"],
+    relatedServices: ["international-tax-pma", "tax-controversy"],
+    relatedInsights: ["tax-governance-framework-large-companies", "preparing-for-a-tax-audit-in-indonesia"],
+    seo: {
+      title: "Corporate Tax Advisory Indonesia — Tax Review, Planning & Opinion",
+      description:
+        "Corporate tax advisory in Indonesia: tax health checks, corporate tax review, tax planning, written opinions, tax risk assessment, and tax governance.",
+    },
   },
   {
-    slug: "pendampingan-sp2dk-pemeriksaan",
-    enSlug: "sp2dk-tax-audit-assistance",
-    title: "Pendampingan SP2DK & pemeriksaan",
-    enTitle: "SP2DK & tax audit assistance",
-    shortDescription:
-      "Analisis risiko, penyusunan tanggapan tertulis SP2DK (surat permintaan penjelasan dari kantor pajak), dan pendampingan pemeriksaan hingga pembahasan akhir (PHP).",
-    enShortDescription:
-      "Risk assessment, formal written responses to SP2DK tax office inquiries, and end-to-end tax audit representation through final closing conference.",
-    lead: "Menerima SP2DK atau Surat Perintah Pemeriksaan (SP2) membutuhkan respons yang tenang, terukur, dan didukung bukti dokumen serta dasar hukum yang tepat. Kami mendampingi Anda di setiap tahapan.",
-    enLead:
-      "Receiving an SP2DK inquiry or a formal Tax Audit notice requires a calm, structured response backed by solid documentation and legal basis. Our senior advisors represent you at every stage.",
-    icon: "file-search",
-    segment: "both",
-    ctaMode: "dual",
-    isMvpCore: true,
-    showDisputeDiagram: true,
-    whoFor: [
-      "Perusahaan atau pemilik usaha yang baru menerima surat SP2DK dengan tenggat tanggapan 14 hari",
-      "Wajib pajak yang sedang menjalani Pemeriksaan Pajak (rutin maupun khusus) dan menerima SPHP",
-      "CFO dan tim finance yang ingin memastikan ekualisasi data siap sebelum menghadiri konseling dengan Account Representative (AR)",
-      "Korporasi PMA/PMDN yang membutuhkan kuasa/pendamping bersertifikat saat pembahasan akhir pemeriksaan",
-    ],
-    enWhoFor: [
-      "Companies or business owners who received an SP2DK letter with a 14-day response window",
-      "Taxpayers undergoing routine or special Tax Audits and responding to SPHP audit findings",
-      "CFOs and finance teams needing thorough data equalization before meeting with the Tax Office",
-      "Corporate and PMA entities requiring certified representation during closing conferences",
-    ],
-    commonProblems: [
+    slug: "international-tax-pma",
+    number: "02",
+    icon: "international",
+    title: "International Tax & PMA",
+    cardSummary:
+      "Indonesian tax advisory for foreign-invested companies and cross-border transactions, including treaties and withholding tax.",
+    headline: "Indonesian Tax Advisory for PMA Companies",
+    valueProposition:
+      "Understand Indonesian tax obligations, cross-border implications, and potential tax exposure with structured advisory tailored to your business context.",
+    ctaLabel: "Discuss Your PMA Tax Matter",
+    situations: [
       {
-        title: "Tenggat 14 hari SP2DK yang sempit sementara dokumen belum terkumpul",
+        title: "Payments to foreign affiliates",
         description:
-          "Menjawab SP2DK secara terburu-buru tanpa rekonsiliasi yang utuh berisiko meningkatkan tindak lanjut menjadi pemeriksaan pajak.",
+          "Service fees, royalties, interest, and dividends paid offshore raise withholding tax, VAT, and deductibility questions that need consistent treatment.",
       },
       {
-        title: "Koreksi pemeriksa dalam SPHP yang bernilai material",
+        title: "Applying a tax treaty",
         description:
-          "Ketika Surat Pemberitahuan Hasil Pemeriksaan (SPHP) terbit, wajib pajak memiliki waktu terbatas untuk menyusun tanggapan tertulis dan argumen di Pembahasan Akhir (PHP).",
+          "Reduced treaty rates depend on procedural requirements and on the recipient meeting substance and beneficial ownership conditions.",
       },
       {
-        title: "Perbedaan interpretasi regulasi atas biaya dan transaksi afiliasi",
+        title: "Entering or restructuring in Indonesia",
         description:
-          "Tanpa rujukan PMK/SE dan yurisprudensi yang tepat, argumen bisnis sering kali tidak diterima oleh tim pemeriksa.",
+          "Investment structure, financing, and operating model choices have tax consequences for the Indonesian entity and the wider group.",
+      },
+      {
+        title: "Reporting to regional or global teams",
+        description:
+          "Headquarters need Indonesian tax matters explained clearly in English, with exposure and options presented in a consistent format.",
+      },
+    ],
+    scope: [
+      {
+        title: "PMA Tax Advisory",
+        description:
+          "Ongoing or project-based advisory on corporate income tax, VAT, and withholding obligations for foreign-invested companies.",
+      },
+      {
+        title: "Cross-Border Tax Review",
+        description:
+          "Review of cross-border payment flows and contracts to identify withholding tax, VAT, and deductibility exposure.",
+      },
+      {
+        title: "Tax Treaty Analysis",
+        description:
+          "Assessment of treaty eligibility and procedural requirements, including the certificate of domicile and anti-abuse provisions.",
+      },
+      {
+        title: "Withholding Tax Advisory",
+        description:
+          "Characterisation of payments and the applicable Article 26 and domestic withholding treatment.",
+      },
+      {
+        title: "International Tax Structuring",
+        description:
+          "Evaluation of investment, financing, and operating structures, including permanent establishment considerations.",
+      },
+      {
+        title: "Expatriate Tax Advisory",
+        description: "Individual tax residency and employment tax matters for expatriate staff.",
+        confirm: true,
       },
     ],
     deliverables: [
-      "Matriks pemetaan isu dalam SP2DK atau SPHP beserta estimasi eksposur risiko pajak",
-      "Kertas kerja rekonsiliasi & ekualisasi lengkap beserta daftar bukti pendukung yang relevan",
-      "Draf surat penjelasan tertulis atas SP2DK atau surat tanggapan SPHP dengan dasar regulasi",
-      "Pendampingan langsung saat konseling/tatap muka dengan AR atau tim Pemeriksa Pajak",
-      "Pendampingan pada tahapan Pembahasan Akhir Hasil Pemeriksaan (PHP) dan Tim Quality Assurance (QA)",
-      "Laporan evaluasi pasca-SP2DK/pemeriksaan untuk perbaikan kontrol internal ke depan",
+      "Cross-border transaction map with tax treatment by payment type",
+      "Treaty eligibility and documentation checklist",
+      "Withholding tax and VAT exposure summary",
+      "Advisory memorandum in English for regional or global stakeholders",
+      "Recommended actions and documentation to maintain",
     ],
-    enDeliverables: [
-      "Issue mapping matrix for SP2DK or SPHP findings with quantified tax exposure analysis",
-      "Comprehensive reconciliation working papers and indexed supporting evidence",
-      "Formal written SP2DK explanation letter or SPHP rebuttal grounded in prevailing regulations",
-      "Direct representation in meetings with Account Representatives or Tax Auditors",
-      "Representation during Final Closing Conference (PHP) and Quality Assurance (QA) review",
-      "Post-audit evaluation report to strengthen future internal tax controls",
+    process: [
+      {
+        title: "Understand",
+        description: "Map the group structure, Indonesian operations, and cross-border flows in scope.",
+      },
+      {
+        title: "Assess",
+        description: "Review contracts, payment records, treaty documentation, and filings against applicable rules.",
+      },
+      {
+        title: "Advise",
+        description: "Explain treatment, exposure, and options in writing for local and regional decision-makers.",
+      },
+      {
+        title: "Support",
+        description: "Assist with documentation, agreed changes, and ongoing questions as transactions evolve.",
+      },
     ],
-    processSteps: [
+    considerations: [
       {
-        step: "Hari 1–2: Telaah surat & pemetaan tenggat",
-        duration: "1–2 hari kerja",
+        title: "Treaty procedures",
         description:
-          "Membedah poin pertanyaan dalam SP2DK/SP2, mengidentifikasi tenggat resmi, dan menyusun daftar dokumen prioritas.",
+          "Treaty benefits in Indonesia are subject to procedural requirements set by the Directorate General of Taxes (including PER-25/PJ/2018) and to anti-abuse tests. Missing documentation can result in domestic rates being applied.",
       },
       {
-        step: "Hari 3–8: Rekonsiliasi data & pengujian bukti",
-        duration: "4–6 hari kerja",
+        title: "Permanent establishment",
         description:
-          "Mencocokkan angka SPT, laporan keuangan, mutasi rekening, dan invoice untuk menemukan penjelasan faktual atas selisih data DJP.",
+          "Activities of foreign personnel or agents in Indonesia may create a permanent establishment. The applicable treaty and domestic rules (including PMK-35/PMK.03/2019) should be considered before activities begin.",
       },
       {
-        step: "Hari 9–12: Penyusunan draf tanggapan tertulis",
-        duration: "2–3 hari kerja",
+        title: "Financing and interest",
         description:
-          "Menyusun surat penjelasan yang sistematis, sopan, dan berdasar regulasi, lalu mereview bersama manajemen Anda.",
-      },
-      {
-        step: "Hari 13–selesai: Penyampaian & pendampingan pembahasan",
-        duration: "Sesuai jadwal KPP",
-        description:
-          "Mendampingi penyampaian surat, menghadiri berita acara permintaan penjelasan atau pembahasan akhir hingga proses selesai.",
+          "Shareholder loans are subject to debt-to-equity limits (PMK-169/PMK.010/2015) and to arm's length requirements for related-party interest.",
       },
     ],
     faqs: [
       {
-        question: "Apa itu SP2DK dan apakah berarti perusahaan saya sedang diperiksa?",
+        question: "Can you communicate directly with our regional headquarters?",
         answer:
-          "SP2DK (Surat Permintaan Penjelasan atas Data dan/atau Keterangan) belum merupakan pemeriksaan pajak, melainkan tahap klarifikasi dari kantor pajak atas data yang belum cocok. Jika dijawab dengan bukti yang memadai dan tepat waktu, proses dapat selesai tanpa berlanjut ke pemeriksaan.",
+          "Yes. Deliverables can be prepared in English and we can join calls with regional finance or tax teams, as agreed in the engagement scope.",
       },
       {
-        question: "Apakah PrimeTax bisa menjamin SP2DK pasti ditutup tanpa bayar pajak?",
+        question: "When should a PMA company review its cross-border payments?",
         answer:
-          "Kami tidak pernah menjanjikan hasil yang tidak dapat dijamin karena hasil akhir bergantung pada fakta transaksi dan kelengkapan dokumen. Yang kami jamin adalah ketelitian rekonsiliasi, ketepatan argumen regulasi, dan kepatuhan pada seluruh prosedur resmi.",
+          "Ideally before new intercompany agreements are signed or new payment types begin, and periodically as part of year-end preparation. Earlier review allows documentation to be put in place before payments are made.",
       },
       {
-        question: "Bagaimana jika tenggat 14 hari SP2DK saya tinggal beberapa hari lagi?",
+        question: "Do you also cover transfer pricing for PMA companies?",
         answer:
-          "Segera hubungi kami. Kami akan melakukan triase cepat atas poin paling material dan, bila diizinkan ketentuan di KPP terkait, membantu mengomunikasikan jadwal penyampaian data secara bertahap.",
-      },
-      {
-        question: "Apakah konsultan Anda dapat hadir mendampingi kami di kantor pajak?",
-        answer:
-          "Ya. Konsultan kami yang memiliki izin praktik dan sertifikasi BKP dapat mendampingi atau mewakili perusahaan Anda sesuai surat kuasa khusus.",
+          "Yes. Transfer pricing is closely linked to cross-border advisory and is covered under our Transfer Pricing practice. We coordinate the two where both are in scope.",
       },
     ],
-    tags: ["sp2dk", "pemeriksaan", "sengketa", "kepatuhan"],
-  },
-  {
-    slug: "keberatan-banding",
-    enSlug: "tax-objection-appeal-litigation",
-    title: "Keberatan, banding & Pengadilan Pajak",
-    enTitle: "Tax objection, appeal & Tax Court litigation",
-    shortDescription:
-      "Penyusunan surat keberatan, memori banding, kontra memori, serta pendampingan persidangan oleh Kuasa Hukum Pengadilan Pajak berizin.",
-    enShortDescription:
-      "Preparation of formal tax objections, appeal briefs, and full representation in the Indonesian Tax Court by licensed Tax Court attorneys.",
-    lead: "Ketika Surat Ketetapan Pajak (SKP) atau Keputusan Keberatan belum mencerminkan substansi transaksi Anda, tim konsultan dan Kuasa Hukum Pengadilan Pajak kami mendampingi upaya hukum secara objektif dan terukur.",
-    enLead:
-      "When a Tax Assessment Letter (SKP) or Objection Decision does not reflect the true substance of your transactions, our licensed Tax Court attorneys provide rigorous, objective representation.",
-    icon: "scale",
-    segment: "korporasi",
-    ctaMode: "corporate",
-    isMvpCore: true,
-    showDisputeDiagram: true,
-    whoFor: [
-      "Korporasi yang menerima SKPKB/SKPLB dengan koreksi pemeriksa yang tidak disetujui",
-      "Perusahaan yang akan mengajukan Keberatan ke DJP dalam batas waktu 3 bulan sejak SKP dikirim",
-      "Wajib pajak yang pengajuan keberatannya ditolak/dikabulkan sebagian dan akan menempuh Banding ke Pengadilan Pajak",
-      "Grup usaha yang menghadapi Gugatan pajak atau Peninjauan Kembali (PK) ke Mahkamah Agung",
-    ],
-    enWhoFor: [
-      "Corporations receiving disputed Tax Assessment Letters (SKPKB/SKPLB)",
-      "Taxpayers preparing formal Objections within the strict 3-month statutory deadline",
-      "Entities filing Appeals or Lawsuits before the Indonesian Tax Court",
-      "Corporate groups handling Judicial Review (Peninjauan Kembali) filings",
-    ],
-    commonProblems: [
-      {
-        title: "Syarat formal pengajuan keberatan atau banding yang ketat",
-        description:
-          "Kesalahan perhitungan tenggat waktu 3 bulan atau syarat pembayaran pajak yang disetujui dalam PHP dapat menyebabkan permohonan tidak dapat dipertimbangkan secara formal.",
-      },
-      {
-        title: "Risiko sanksi denda 30% (keberatan) atau 60% (banding) jika permohonan ditolak",
-        description:
-          "Sebelum melangkah ke upaya hukum, manajemen memerlukan penilaian objektif atas kekuatan bukti dan peluang argumen agar keputusan bisnis terukur.",
-      },
-      {
-        title: "Pembuktian di persidangan Pengadilan Pajak yang membutuhkan matriks alat bukti",
-        description:
-          "Majelis Hakim menilai kebenaran materiil berdasarkan kesesuaian argumen hukum dengan bukti transaksi yang terorganisasi rapi.",
-      },
-    ],
-    deliverables: [
-      "Tax dispute feasibility memo (analisis kekuatan hukum, kelengkapan bukti, dan simulasi eksposur sanksi)",
-      "Penyusunan Surat Keberatan dan tanggapan atas Surat Pemberitahuan Untuk Hadir (SPUH)",
-      "Penyusunan Surat Banding, Surat Gugatan, dan Surat Bantahan di Pengadilan Pajak",
-      "Penyusunan matriks alat bukti dan penjelasan tertulis selama proses persidangan",
-      "Pendampingan langsung di persidangan Pengadilan Pajak oleh Kuasa Hukum berizin resmi",
-      "Pendampingan administrasi pelaksanaan Putusan Pengadilan Pajak (pencairan kelebihan bayar / imbalan bunga)",
-    ],
-    enDeliverables: [
-      "Tax dispute feasibility & risk exposure memo prior to filing",
-      "Formal Tax Objection brief and SPUH response documentation",
-      "Tax Court Appeal brief (Surat Banding), Rebuttal (Surat Bantahan), and closing arguments",
-      "Comprehensive evidentiary matrix and written hearing explanations",
-      "Direct courtroom representation by licensed Tax Court attorneys",
-      "Post-decision execution and tax refund/interest claim administration",
-    ],
-    processSteps: [
-      {
-        step: "Minggu 1–2: Feasibility review & verifikasi syarat formal",
-        duration: "5–10 hari kerja",
-        description:
-          "Menelaah SKP/Keputusan Keberatan, kertas kerja pemeriksa, tenggat waktu, dan memberikan rekomendasi objektif mengenai kelayakan sengketa.",
-      },
-      {
-        step: "Minggu 3–6: Penyusunan argumen hukum & matriks bukti",
-        duration: "3–4 minggu",
-        description:
-          "Menyusun argumen materiil berdasarkan peraturan perpajakan, prinsip akuntansi, dan putusan pengadilan sejenis, serta menyusun indeks bukti.",
-      },
-      {
-        step: "Pengajuan resmi sebelum tenggat",
-        duration: "Tepat waktu (< 3 bulan)",
-        description:
-          "Menyampaikan berkas Keberatan atau Banding secara lengkap dan memastikan seluruh syarat formal terpenuhi.",
-      },
-      {
-        step: "Pendampingan pembahasan / persidangan",
-        duration: "9–12 bulan (sesuai tahapan)",
-        description:
-          "Mewakili perusahaan dalam pembahasan dengan Penelaah Keberatan atau menghadiri persidangan reguler di Pengadilan Pajak hingga putusan.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Apakah kami harus membayar seluruh nilai SKPKB sebelum mengajukan keberatan?",
-        answer:
-          "Sesuai UU KUP, wajib pajak hanya wajib melunasi pajak yang telah disetujui dalam Pembahasan Akhir Hasil Pemeriksaan (PHP) sebelum mengajukan keberatan. Jumlah yang tidak disetujui tertangguh pembayarannya sampai ada keputusan.",
-      },
-      {
-        question: "Apakah tim PrimeTax memiliki Izin Kuasa Hukum Pengadilan Pajak?",
-        answer:
-          "Ya. Pendampingan di Pengadilan Pajak ditangani oleh tim kami yang memegang Izin Kuasa Hukum bidang perpajakan resmi dari Sekretariat Pengadilan Pajak.",
-      },
-      {
-        question: "Apakah kalian menerima skema success fee yang menjanjikan kemenangan?",
-        answer:
-          "Kami mematuhi kode etik profesi dan ketentuan Pengadilan Pajak. Kami tidak pernah menjanjikan kemenangan sengketa. Struktur fee kami disusun secara transparan dan profesional di dalam proposal tertulis.",
-      },
-      {
-        question: "Bagaimana jika kami ingin meminta pendapat kedua (second opinion) dulu atas SKP kami?",
-        answer:
-          "Sangat bisa. Kami menyediakan layanan diagnostic/feasibility review singkat atas SKP dan SPHP Anda sebelum manajemen memutuskan untuk mengajukan keberatan atau banding.",
-      },
-    ],
-    tags: ["keberatan", "banding", "pengadilan-pajak", "sengketa"],
-  },
-  {
-    slug: "restitusi",
-    enSlug: "tax-refund-assistance",
-    title: "Restitusi PPN & PPh",
-    enTitle: "VAT & corporate tax refund assistance",
-    shortDescription:
-      "Pra-audit kesiapan dokumen, pengajuan pengembalian pendahuluan atau restitusi normal, dan pendampingan pemeriksaan lebih bayar hingga dana cair.",
-    enShortDescription:
-      "Pre-filing document readiness review, preliminary or standard tax refund applications, and overpayment audit representation until disbursement.",
-    lead: "Restitusi PPN atau PPh yang sah adalah hak arus kas perusahaan Anda. Kami melakukan pra-verifikasi dokumen sebelum pengajuan agar risiko koreksi dan denda selama pemeriksaan lebih bayar dapat diminimalkan.",
-    enLead:
-      "Legitimate VAT and corporate tax refunds belong in your working capital. We conduct rigorous pre-filing verification to minimize audit adjustments and accelerate disbursement.",
-    icon: "receipt",
-    segment: "both",
-    ctaMode: "dual",
-    isMvpCore: true,
-    whoFor: [
-      "Eksportir barang/jasa, perusahaan di Kawasan Berikat/KEK, dan rekanan pemungut PPN (BUMN/pemerintah) yang rutin mengalami lebih bayar PPN",
-      "Perusahaan manufaktur atau properti yang sedang dalam fase investasi modal besar (capex) dengan PPN Masukan signifikan",
-      "Wajib pajak yang memenuhi kriteria Pengembalian Pendahuluan (Pasal 17C/17D UU KUP atau PKP Berisiko Rendah)",
-      "Perusahaan dengan SPT Tahunan PPh Badan Lebih Bayar akibat kredit pajak PPh 22/23/25 yang lebih besar dari pajak terutang",
-    ],
-    enWhoFor: [
-      "Exporters, Bonded Zone/SEZ companies, and government/SOE vendors with recurring VAT overpayments",
-      "Manufacturing or property companies in heavy capex phases accumulating significant input VAT",
-      "Eligible taxpayers seeking fast-track Preliminary Tax Refunds (Low-Risk PKP)",
-      "Corporations with Corporate Income Tax overpayments due to prepaid Article 22/23/25 tax credits",
-    ],
-    commonProblems: [
-      {
-        title: "Khawatir mengajukan restitusi karena takut dokumen belum siap diperiksa",
-        description:
-          "Pengajuan restitusi normal memicu pemeriksaan pajak. Tanpa pra-audit atas faktur pajak masukan dan arus uang/barang, risiko koreksi dapat menggerus nilai restitusi.",
-      },
-      {
-        title: "Arus kas tertahan berbulan-bulan karena proses kelengkapan dokumen lambat",
-        description:
-          "Keterlambatan memenuhi permintaan peminjaman dokumen dari pemeriksa membuat pencairan SKPLB berlarut-larut.",
-      },
-      {
-        title: "Belum memanfaatkan jalur Pengembalian Pendahuluan yang jauh lebih singkat",
-        description:
-          "Banyak wajib pajak yang sebenarnya memenuhi syarat pengembalian pendahuluan (1–3 bulan) namun tetap mengajukan lewat jalur pemeriksaan 12 bulan.",
-      },
-    ],
-    deliverables: [
-      "Pre-refund diagnostic report (uji validitas Faktur Pajak Masukan, arus uang, arus barang, dan ekualisasi)",
-      "Rekomendasi jalur restitusi paling optimal (Pengembalian Pendahuluan vs Pemeriksaan Normal)",
-      "Penyusunan berkas permohonan restitusi/pengembalian pendahuluan di Coretax",
-      "Kertas kerja pengujian arus kas, arus piutang/utang, dan arus persediaan siap-periksa",
-      "Pendampingan penuh selama pemeriksaan restitusi hingga terbitnya SKPLB / SKPPKP",
-      "Pendampingan administrasi SPMKP hingga dana restitusi masuk ke rekening perusahaan",
-    ],
-    enDeliverables: [
-      "Pre-refund diagnostic report (input VAT validity, cash flow, goods flow, and equalization test)",
-      "Optimal refund pathway recommendation (Preliminary Fast-Track vs. Standard Audit)",
-      "Preparation and filing of refund applications via Coretax",
-      "Audit-ready working papers for cash flow, receivables/payables, and inventory flow",
-      "Full representation during the overpayment tax audit through SKPLB/SKPPKP issuance",
-      "Disbursement administration (SPMKP) until funds reach the corporate bank account",
-    ],
-    processSteps: [
-      {
-        step: "Tahap 1: Pra-audit kesiapan dokumen (Pre-refund review)",
-        duration: "2–3 minggu",
-        description:
-          "Memeriksa kelengkapan faktur pajak masukan, bukti pembayaran, dokumen pengiriman/ekspor (PEB/PIB), dan menghitung estimasi nilai restitusi bersih yang aman.",
-      },
-      {
-        step: "Tahap 2: Perbaikan & pengajuan permohonan",
-        duration: "1 minggu",
-        description:
-          "Melakukan pembetulan bila diperlukan dan mengajukan permohonan restitusi melalui Coretax dengan indeks dokumen yang sudah tertata.",
-      },
-      {
-        step: "Tahap 3: Pendampingan penelitian / pemeriksaan",
-        duration: "1 bulan (pendahuluan) / s.d. 12 bulan (normal)",
-        description:
-          "Memenuhi permintaan dokumen tepat waktu, menjawab kuesioner/konfirmasi, dan mendampingi pembahasan SPHP atas lebih bayar.",
-      },
-      {
-        step: "Tahap 4: Penerbitan SKPLB & pencairan rekening",
-        duration: "2–4 minggu pasca-SKPLB",
-        description:
-          "Memastikan surat penunjukan rekening di Coretax sesuai hingga dana restitusi cair.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Berapa lama proses pencairan restitusi PPN?",
-        answer:
-          "Untuk jalur Pengembalian Pendahuluan (PKP Berisiko Rendah atau nilai tertentu sesuai PMK terbaru), proses penelitian berlangsung sekitar 1 bulan. Untuk jalur pemeriksaan normal, batas waktu pemeriksaan adalah maksimal 12 bulan sejak permohonan lengkap diterima.",
-      },
-      {
-        question: "Apakah kami boleh melakukan pra-cek dulu sebelum memutuskan kompensasi atau restitusi?",
-        answer:
-          "Sangat disarankan. Kami selalu memulai dengan pre-refund diagnostic review agar Anda mengetahui berapa porsi Faktur Masukan yang 100% didukung arus uang dan barang sebelum menekan tombol restitusi.",
-      },
-      {
-        question: "Bagaimana jika ada lawan transaksi kami yang belum melaporkan PPN-nya?",
-        answer:
-          "Dalam tahap pra-audit, kami menguji bukti pembayaran dari rekening perusahaan Anda ke vendor sehingga hak pengkreditan PPN Masukan tetap terlindungi sesuai ketentuan tanggung renteng di UU PPN.",
-      },
-    ],
-    tags: ["restitusi", "ppn", "pemeriksaan", "arus-kas"],
+    relatedServices: ["transfer-pricing", "tax-advisory"],
+    relatedInsights: ["cross-border-payments-pma-withholding-tax", "transfer-pricing-documentation-indonesia"],
+    seo: {
+      title: "International Tax & PMA Tax Advisory Indonesia",
+      description:
+        "Tax advisory for PMA and foreign-invested companies in Indonesia: cross-border reviews, tax treaty analysis, withholding tax, and international structuring.",
+    },
   },
   {
     slug: "transfer-pricing",
-    enSlug: "transfer-pricing",
-    title: "Transfer pricing (Master File, Local File & CbCR)",
-    enTitle: "Transfer pricing documentation & advisory",
-    shortDescription:
-      "Penyusunan TP Documentation sesuai PMK 172/2023, benchmarking analisis kesebandingan, perencanaan kebijakan harga transfer, dan pendampingan sengketa TP.",
-    enShortDescription:
-      "Preparation of Master File, Local File, and CbCR under PMK 172/2023, benchmarking studies, intercompany pricing policies, and TP dispute defense.",
-    lead: "Transaksi afiliasi menjadi salah satu fokus utama pengawasan DJP. Kami menyusun dokumentasi Transfer Pricing (TP Doc) yang memenuhi ketentuan PMK 172/2023 secara tepat waktu sekaligus siap dipertahankan saat pemeriksaan.",
-    enLead:
-      "Intercompany transactions remain a primary focus of Indonesian tax audits. We prepare robust Transfer Pricing Documentation compliant with PMK 172/2023—delivered on time and built to withstand audit scrutiny.",
-    icon: "arrow-left-right",
-    segment: "korporasi",
-    ctaMode: "corporate",
-    isMvpCore: true,
-    whoFor: [
-      "Perusahaan PMA maupun grup PMDN yang memiliki transaksi hubungan istimewa (barang, jasa manajemen, royalti, pinjaman afiliasi)",
-      "Wajib pajak yang melampaui ambang batas peredaran bruto atau nilai transaksi afiliasi wajib TP Doc sesuai PMK 172/2023",
-      "Grup usaha yang sedang merancang kebijakan harga transfer (ex-ante) sebelum tahun buku berjalan",
-      "Korporasi yang sedang menghadapi koreksi positif Transfer Pricing dalam SP2DK, Pemeriksaan, atau MAP/APA",
-    ],
-    enWhoFor: [
-      "Foreign-owned (PMA) and domestic corporate groups with intercompany goods, services, royalty, or loan transactions",
-      "Taxpayers meeting the statutory revenue or transaction thresholds under PMK 172/2023",
-      "Groups designing ex-ante intercompany pricing policies and agreements",
-      "Corporations defending Transfer Pricing adjustments in SP2DK, Tax Audits, MAP, or APA",
-    ],
-    commonProblems: [
+    number: "03",
+    icon: "transfer-pricing",
+    title: "Transfer Pricing",
+    cardSummary:
+      "Risk assessment, documentation, and benchmarking for related-party transactions under Indonesian transfer pricing rules.",
+    headline: "Transfer Pricing Advisory and Documentation",
+    valueProposition:
+      "Assess related-party transactions, prepare documentation that reflects how your business actually operates, and understand where transfer pricing risk sits.",
+    ctaLabel: "Review Your Transfer Pricing Risk",
+    situations: [
       {
-        title: "TP Doc baru disusun setelah diminta pemeriksa (melewati tenggat 4 bulan)",
+        title: "Documentation obligations",
         description:
-          "Sesuai PMK 172/2023, Dokumen Induk dan Dokumen Lokal wajib tersedia paling lama 4 bulan setelah akhir tahun pajak. Keterlambatan membuat dokumen tidak diakui sebagai TP Doc melainkan hanya data biasa.",
+          "Companies with related-party transactions may be required to prepare a Master File and Local File, depending on applicable thresholds.",
       },
       {
-        title: "Transaksi jasa manajemen & royalti dikoreksi karena kurangnya bukti manfaat (benefit test)",
+        title: "Intragroup services and royalties",
         description:
-          "Pengujian pendahuluan (preliminary steps) atas jasa intragrup dan lisensi intangibles menuntut bukti eksistensi dan manfaat ekonomi yang nyata.",
+          "Management fees and royalties are frequently examined for evidence of benefit and arm's length pricing.",
       },
       {
-        title: "Pembanding (benchmarking) ditolak pemeriksa karena kriteria seleksi kurang tajam",
+        title: "Business model changes",
         description:
-          "Analisis kesebandingan dan pemilihan metode TP membutuhkan penyaringan pembanding independen yang dapat dipertanggungjawabkan.",
+          "Changes in functions, assets, or risks — such as converting a distributor or centralising procurement — affect expected profitability.",
+      },
+      {
+        title: "Profitability under scrutiny",
+        description:
+          "Sustained losses or low margins in an entity with related-party transactions may draw questions during audits.",
+      },
+    ],
+    scope: [
+      {
+        title: "Transfer Pricing Risk Assessment",
+        description:
+          "Review of related-party transactions to identify where pricing, documentation, or characterisation creates risk.",
+      },
+      {
+        title: "Master File and Local File",
+        description:
+          "Preparation or review of transfer pricing documentation consistent with the group's actual functions, assets, and risks.",
+      },
+      {
+        title: "Benchmarking Analysis",
+        description:
+          "Search and analysis of comparable companies or transactions to support the arm's length range.",
+      },
+      {
+        title: "Related-Party Transaction Review",
+        description: "Review of agreements, invoices, and evidence supporting specific related-party transactions.",
+      },
+      {
+        title: "Intercompany Pricing Review",
+        description:
+          "Evaluation of pricing policies and year-end adjustments against the selected transfer pricing method.",
+      },
+      {
+        title: "APA / MAP Advisory",
+        description: "Advisory on Advance Pricing Agreements and Mutual Agreement Procedures.",
+        confirm: true,
       },
     ],
     deliverables: [
-      "Dokumen Lokal (Local File) berbahasa Indonesia sesuai format dan lampiran PMK 172/2023",
-      "Dokumen Induk (Master File) dan lokalisasi Master File grup multinasional",
-      "Notifikasi dan Laporan Per Negara (CbCR) serta Ikhtisar Dokumen Induk & Lokal untuk lampiran SPT Tahunan",
-      "Studi benchmarking pembanding independen (perdagangan, manufaktur, jasa, tingkat bunga pinjaman, royalti)",
-      "Kertas kerja pengujian pendahuluan (benefit test) untuk jasa intragrup, royalti, dan pinjaman pemegang saham",
-      "Pendampingan pertahanan TP Doc saat SP2DK/Pemeriksaan serta pengajuan APA/MAP",
+      "Related-party transaction inventory and risk heat map",
+      "Master File and/or Local File",
+      "Benchmarking report with search strategy and comparables",
+      "Functional analysis and characterisation memorandum",
+      "Recommendations on pricing policy and supporting evidence",
     ],
-    enDeliverables: [
-      "Indonesian-language Local File fully compliant with PMK 172/2023 requirements",
-      "Master File preparation or localization of global group Master Files",
-      "CbCR Notification/Filing and Summary Form (Ikhtisar) for Corporate Annual Tax Return",
-      "Independent benchmarking studies (distribution, manufacturing, services, intercompany loans, royalties)",
-      "Preliminary benefit test working papers for intra-group services and intangibles",
-      "TP audit defense representation and APA/MAP application support",
+    process: [
+      {
+        title: "Understand",
+        description: "Interview management to understand the value chain, group structure, and transactions.",
+      },
+      {
+        title: "Assess",
+        description: "Analyse functions, assets, and risks; test pricing and documentation against requirements.",
+      },
+      {
+        title: "Advise",
+        description: "Prepare documentation and explain risks, assumptions, and recommended changes.",
+      },
+      {
+        title: "Support",
+        description: "Assist with updates, information requests, and alignment with the group's global policy.",
+      },
     ],
-    processSteps: [
+    considerations: [
       {
-        step: "Minggu 1–2: Pemetaan transaksi afiliasi & analisis fungsi (FAR)",
-        duration: "2 minggu",
+        title: "Current framework",
         description:
-          "Mengidentifikasi seluruh pihak berelasi, mengumpulkan kontrak intragrup, dan melakukan wawancara analisis Fungsi, Aset, dan Risiko (FAR).",
+          "Indonesian transfer pricing documentation and the arm's length principle are governed by PMK-172/PMK.03/2023, which consolidated earlier rules. Thresholds and timelines should be confirmed against the regulation for each year.",
       },
       {
-        step: "Minggu 3–5: Pemilihan metode & studi benchmarking",
-        duration: "2–3 minggu",
+        title: "Substance over form",
         description:
-          "Menentukan metode harga transfer paling tepat, melakukan pencarian perusahaan pembanding independen, dan menghitung rentang kewajaran.",
+          "Documentation must reflect actual conduct. Agreements that differ from how the business operates provide limited protection.",
       },
       {
-        step: "Minggu 6–7: Penyusunan draf Master File & Local File",
-        duration: "2 minggu",
+        title: "Consistency with the group",
         description:
-          "Menulis narasi analisis industri, pengujian pendahuluan, dan analisis penerapan PKKU dalam Bahasa Indonesia baku.",
-      },
-      {
-        step: "Minggu 8 (sebelum 30 April): Finalisasi & Ikhtisar SPT",
-        duration: "Sebelum tenggat 4 bulan",
-        description:
-          "Memastikan dokumen bertanggal tersedia tepat waktu beserta lampiran Ikhtisar untuk SPT Tahunan PPh Badan.",
+          "Local documentation should be consistent with the group's global transfer pricing policy and with information reported in other jurisdictions.",
       },
     ],
     faqs: [
       {
-        question: "Bagaimana cara mengetahui apakah perusahaan kami wajib menyusun TP Doc?",
+        question: "Is every company with related-party transactions required to prepare a Local File?",
         answer:
-          "Anda dapat menggunakan tool gratis 'Cek Wajib TP Doc' di situs kami. Secara ringkas, kewajiban timbul jika ada transaksi afiliasi dan peredaran bruto tahun sebelumnya > Rp 50 miliar, atau transaksi barang afiliasi > Rp 20 miliar, atau transaksi jasa/bunga/royalti afiliasi > Rp 5 miliar (atau transaksi dengan pihak di yurisdiksi tarif pajak lebih rendah).",
+          "Not necessarily. Requirements depend on thresholds and on the nature of the transactions. We review your facts against the current regulation to confirm what applies.",
       },
       {
-        question: "Apakah Master File dari kantor pusat luar negeri bisa langsung dipakai di Indonesia?",
+        question: "Can you review documentation prepared by our group's global advisor?",
         answer:
-          "Master File harus tersedia dalam Bahasa Indonesia dan memenuhi seluruh elemen rincian informasi yang dipersyaratkan dalam PMK 172/2023. Kami membantu menerjemahkan sekaligus menyesuaikan (lokalisasi) Master File global grup Anda.",
+          "Yes. We can review global documentation for consistency with Indonesian requirements and with how the local entity operates, and recommend local supplements where needed.",
       },
       {
-        question: "Kapan batas waktu ketersediaan TP Doc setiap tahunnya?",
+        question: "Do you assist with Advance Pricing Agreements?",
         answer:
-          "Paling lama 4 bulan setelah akhir tahun pajak (30 April untuk tahun buku Januari–Desember), dan harus diserahkan dalam waktu 1 bulan sejak diminta oleh DJP.",
+          "Please discuss APA or MAP matters with us directly. We will confirm the scope of assistance we can provide for your specific situation.",
       },
     ],
-    tags: ["transfer-pricing", "pmk-172", "korporasi", "pma"],
+    relatedServices: ["international-tax-pma", "tax-controversy"],
+    relatedInsights: ["transfer-pricing-documentation-indonesia", "cross-border-payments-pma-withholding-tax"],
+    seo: {
+      title: "Transfer Pricing Advisory Indonesia — Documentation & Benchmarking",
+      description:
+        "Transfer pricing advisory in Indonesia: risk assessment, Master File and Local File, benchmarking, and related-party transaction review.",
+    },
   },
   {
-    slug: "pajak-internasional-gmt",
-    enSlug: "international-tax-gmt",
-    title: "Pajak internasional & Pajak Minimum Global (GMT)",
-    enTitle: "International tax & Global Minimum Tax (Pillar Two)",
-    shortDescription:
-      "Analisis penerapan P3B (Tax Treaty), pemotongan PPh Pasal 26 lintas negara, kesiapan Pajak Minimum Global (GloBE / Pilar Dua), dan struktur investasi PMA.",
-    enShortDescription:
-      "Tax treaty (DTA) relief analysis, cross-border Article 26 withholding, Pillar Two Global Minimum Tax (GloBE) readiness, and inbound/outbound structuring.",
-    lead: "Transaksi lintas yurisdiksi menuntut kepatuhan atas Perjanjian Penghindaran Pajak Berganda (P3B), administrasi DGT Form, serta kesiapan atas aturan Pajak Minimum Global (Pilar Dua / GloBE) di Indonesia.",
-    enLead:
-      "Cross-border operations require strict compliance with Double Tax Agreements (DTA), DGT Form administration, and readiness for Indonesia's Global Minimum Tax (Pillar Two / GloBE) rules.",
-    icon: "globe-2",
-    segment: "korporasi",
-    ctaMode: "corporate",
-    isMvpCore: false,
-    whoFor: [
-      "Anak perusahaan grup multinasional (MNE) dengan pendapatan konsolidasi global ≥ EUR 750 juta yang terdampak aturan GMT / Pilar Dua",
-      "Perusahaan Indonesia yang melakukan pembayaran dividen, bunga, royalti, atau jasa teknis ke luar negeri",
-      "Investor asing (PMA) yang membutuhkan struktur kepemilikan dan pembiayaan lintas negara yang efisien dan patuh",
-    ],
-    enWhoFor: [
-      "Indonesian subsidiaries of MNE groups with consolidated revenue ≥ EUR 750M subject to Pillar Two / GMT",
-      "Companies making cross-border payments for dividends, interest, royalties, or technical services",
-      "Foreign investors structuring inbound investments or regional holding operations",
-    ],
-    commonProblems: [
+    slug: "tax-controversy",
+    number: "04",
+    icon: "controversy",
+    title: "Tax Controversy",
+    cardSummary:
+      "Support with SP2DK letters, tax audits, objections, appeals, and refunds — from first response to dispute strategy.",
+    headline: "Tax Controversy and Dispute Support",
+    valueProposition:
+      "Respond to tax office enquiries and audits in a structured way, understand your position, and make informed decisions about objection and appeal.",
+    ctaLabel: "Discuss Your SP2DK or Tax Audit",
+    situations: [
       {
-        title: "Penerapan tarif P3B ditolak karena ketidaksesuaian DGT Form atau uji Beneficial Owner",
+        title: "An SP2DK has been received",
         description:
-          "Kesalahan pengisian Surat Keterangan Domisili (SKD/DGT) atau gagalnya pengujian substansi ekonomi menyebabkan koreksi PPh Pasal 26 menjadi tarif 20%.",
+          "A request for explanation of data requires a timely, accurate response. The way it is answered can affect whether an audit follows.",
       },
       {
-        title: "Kewajiban pelaporan dan perhitungan Tarif Pajak Efektif (ETR) GloBE / QDMTT",
+        title: "A tax audit has started",
         description:
-          "Grup multinasional yang memanfaatkan fasilitas tax holiday atau tax allowance di Indonesia perlu menilai dampak Top-up Tax dari aturan Pajak Minimum Global 15%.",
+          "Audits involve document requests, discussions, and deadlines. Preparation and consistent communication help manage the process.",
+      },
+      {
+        title: "An assessment has been issued",
+        description:
+          "Management must decide whether to accept, object, or pursue other remedies within statutory time limits.",
+      },
+      {
+        title: "A refund claim is pending",
+        description:
+          "Refund requests typically trigger an examination. Records should be ready before the claim is filed.",
+      },
+    ],
+    scope: [
+      {
+        title: "SP2DK Assistance",
+        description:
+          "Analysis of the data in question, preparation of the explanation, and supporting documentation.",
+      },
+      {
+        title: "Tax Audit Preparation and Assistance",
+        description:
+          "Readiness review, document preparation, and support during audit discussions and closing conferences.",
+      },
+      {
+        title: "Tax Objection",
+        description: "Analysis of the assessment and preparation of the objection within statutory timelines.",
+      },
+      {
+        title: "Tax Appeal",
+        description:
+          "Support with the appeal process at the Tax Court, subject to applicable representation requirements.",
+      },
+      {
+        title: "Tax Refund Assistance",
+        description: "Preparation of refund claims and support during the related examination.",
+      },
+      {
+        title: "Tax Dispute Strategy",
+        description:
+          "Assessment of the merits, costs, and timelines of available remedies to support management's decision.",
       },
     ],
     deliverables: [
-      "Kajian penerapan P3B (Tax Treaty), uji Beneficial Owner, dan verifikasi kelengkapan SKD/DGT Form",
-      "Penilaian dampak (impact assessment) Pajak Minimum Global (Pilar Dua / IIR / UTPR / QDMTT) untuk entitas Indonesia",
-      "Analisis risiko Bentuk Usaha Tetap (BUT / Permanent Establishment) atas aktivitas bisnis lintas batas",
-      "Pendampingan kepatuhan pelaporan GIR (GloBE Information Return) dan SPT terkait GMT",
+      "Issue analysis and position assessment",
+      "Draft responses, explanations, and submissions",
+      "Document index and evidence plan",
+      "Timeline of statutory deadlines and next steps",
+      "Dispute strategy memorandum for management",
     ],
-    enDeliverables: [
-      "Tax Treaty eligibility review, Beneficial Ownership testing, and DGT Form verification",
-      "Pillar Two / Global Minimum Tax (IIR, UTPR, QDMTT) impact assessment for Indonesian constituent entities",
-      "Permanent Establishment (PE) risk assessment for cross-border operations",
-      "GloBE Information Return (GIR) and domestic GMT compliance support",
-    ],
-    processSteps: [
+    process: [
       {
-        step: "Tahap 1: Pemetaan struktur grup & transaksi lintas negara",
-        duration: "1–2 minggu",
-        description: "Menginventarisasi arus pembayaran lintas yurisdiksi, entitas konstituen grup, dan fasilitas pajak yang dimiliki.",
+        title: "Understand",
+        description: "Review the letter or assessment, deadlines, and the facts behind the issues raised.",
       },
       {
-        step: "Tahap 2: Analisis teknis & simulasi perhitungan",
-        duration: "2–3 minggu",
-        description: "Menyusun analisis P3B/BUT atau simulasi Transitional SafeHarbour & perhitungan ETR GloBE.",
+        title: "Assess",
+        description: "Analyse the regulatory basis, available evidence, and the strength of each position.",
       },
       {
-        step: "Tahap 3: Rekomendasi & implementasi kepatuhan",
-        duration: "1–2 minggu",
-        description: "Menyampaikan laporan rekomendasi tertulis, checklist dokumen DGT, dan panduan pelaporan kepada manajemen.",
+        title: "Advise",
+        description: "Recommend a response strategy and prepare submissions for management approval.",
+      },
+      {
+        title: "Support",
+        description: "Assist through discussions, follow-up requests, and subsequent stages as agreed.",
+      },
+    ],
+    considerations: [
+      {
+        title: "Statutory deadlines",
+        description:
+          "Objections and appeals are subject to strict time limits under the General Provisions and Tax Procedures Law (KUP) and the Tax Court Law. Missing a deadline can remove a remedy entirely.",
+      },
+      {
+        title: "Consistency across stages",
+        description:
+          "Positions and evidence presented at the SP2DK or audit stage may affect later stages. A consistent strategy from the start is important.",
+      },
+      {
+        title: "Representation",
+        description:
+          "Representation before the tax office and the Tax Court is subject to specific requirements. The scope of PrimeTax's role is confirmed in each engagement.",
       },
     ],
     faqs: [
       {
-        question: "Siapa saja yang terkena ketentuan Pajak Minimum Global (GMT) di Indonesia?",
+        question: "How quickly should we respond to an SP2DK?",
         answer:
-          "Ketentuan Pajak Minimum Global (15%) berlaku bagi entitas konstituen dari Grup Perusahaan Multinasional (MNE) yang memiliki peredaran bruto konsolidasi tahunan minimal EUR 750 juta dalam sedikitnya 2 dari 4 tahun pajak sebelum tahun pajak yang diuji.",
+          "Responses are expected within the period stated in the letter. Contact us as soon as it is received so there is time to analyse the data and prepare a considered response.",
       },
       {
-        question: "Bagaimana jika lawan transaksi luar negeri terlambat memberikan DGT Form?",
+        question: "Can you guarantee the outcome of an objection or appeal?",
         answer:
-          "Untuk dapat menerapkan tarif P3B pada saat pemotongan, tanda terima SKD WPLN harus sudah tersedia sebelum batas penyampaian SPT Masa masa pajak terutangnya penghasilan. Kami membantu menyusun SOP verifikasi vendor asing agar hal ini tidak terlewat.",
-      },
-    ],
-    tags: ["pajak-internasional", "gmt", "pilar-dua", "pma"],
-  },
-  {
-    slug: "tax-planning-due-diligence",
-    enSlug: "tax-planning-due-diligence",
-    title: "Tax planning, restrukturisasi & due diligence",
-    enTitle: "Tax planning, restructuring & M&A due diligence",
-    shortDescription:
-      "Perencanaan pajak korporasi sesuai koridor regulasi, kajian pajak atas merger/akuisisi/spin-off, serta Tax Due Diligence untuk aksi korporasi.",
-    enShortDescription:
-      "Regulatory-compliant tax planning, merger/acquisition/spin-off structuring, and comprehensive Tax Due Diligence for corporate transactions.",
-    lead: "Setiap aksi korporasi—mulai dari ekspansi, pendanaan, restrukturisasi grup, hingga akuisisi—memiliki konsekuensi pajak yang material. Kami membantu manajemen memetakan eksposur dan struktur transaksi yang efisien serta patuh.",
-    enLead:
-      "Every corporate action—from expansion and fundraising to group restructuring and M&A—carries material tax implications. We help leadership quantify exposures and structure compliant transactions.",
-    icon: "clipboard-list",
-    segment: "korporasi",
-    ctaMode: "corporate",
-    isMvpCore: false,
-    whoFor: [
-      "Investor, private equity, atau korporasi yang akan mengakuisisi saham/aset perusahaan target (Buy-side / Vendor Tax Due Diligence)",
-      "Grup usaha yang merencanakan penggabungan (merger), peleburan, pemekaran (spin-off), atau pengambilalihan dengan nilai buku",
-      "CFO yang membutuhkan opini pajak tertulis (tax opinion) sebelum mengeksekusi kontrak komersial strategis",
-    ],
-    enWhoFor: [
-      "Investors, private equity funds, and corporations conducting Buy-side or Vendor Tax Due Diligence",
-      "Corporate groups planning mergers, spin-offs, or tax-neutral book-value restructurings",
-      "CFOs seeking formal written tax opinions prior to executing major commercial agreements",
-    ],
-    commonProblems: [
-      {
-        title: "Eksposur pajak historis perusahaan target baru ketahuan setelah akuisisi selesai",
-        description:
-          "Tanpa Tax Due Diligence yang mendalam atas 5 tahun pajak terakhir, pembeli menanggung risiko SKPKB historis perusahaan yang diakuisisi.",
+          "No. Outcomes depend on facts, evidence, and the decision of the tax authority or court. We provide an assessment of the merits and risks so management can decide how to proceed.",
       },
       {
-        title: "Restrukturisasi grup memicu PPh pengalihan harta dan PPN karena tidak memenuhi syarat nilai buku",
-        description:
-          "Penggunaan nilai buku dalam merger atau spin-off membutuhkan persetujuan DJP dan pemenuhan uji tujuan bisnis (business purpose test).",
-      },
-    ],
-    deliverables: [
-      "Laporan Tax Due Diligence (Red Flag Report & Full Report) lengkap dengan kuantifikasi eksposur historis",
-      "Rekomendasi klausul proteksi pajak (tax indemnity & warranty) dalam Perjanjian Jual Beli Saham (SPA)",
-      "Kajian struktur transaksi (tax structuring paper) beserta perbandingan beban pajak tiap opsi",
-      "Pendampingan permohonan penggunaan nilai buku untuk merger/spin-off ke DJP",
-    ],
-    enDeliverables: [
-      "Tax Due Diligence Report (Red Flag & Full Report) with quantified historical tax exposures",
-      "Tax indemnity and warranty clause recommendations for Share Purchase Agreements (SPA)",
-      "Transaction structuring paper comparing tax implications across commercial options",
-      "Filing and representation for tax-neutral book-value restructuring approvals",
-    ],
-    processSteps: [
-      {
-        step: "Minggu 1: Penandatanganan NDA & pembukaan Data Room",
-        duration: "3–5 hari kerja",
-        description: "Menyepakati lingkup tahun pajak, menandatangani NDA, dan mengirimkan daftar permintaan dokumen (Information Request List).",
-      },
-      {
-        step: "Minggu 2–3: Pengujian kepatuhan historis & wawancara manajemen",
-        duration: "1–2 minggu",
-        description: "Menelaah SPT, laporan audit, rekonsiliasi fiskal, dan riwayat SP2DK/pemeriksaan serta tanya jawab dengan tim finance target.",
-      },
-      {
-        step: "Minggu 4: Penyampaian Red Flag / Full TDD Report",
-        duration: "1 minggu",
-        description: "Mempresentasikan temuan eksposur risiko rendah/sedang/tinggi dan rekomendasi mitigasi dalam dokumen transaksi.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Berapa tahun buku yang biasanya diperiksa dalam Tax Due Diligence?",
+        question: "Should we prepare for an audit before one is announced?",
         answer:
-          "Umumnya mencakup 3 hingga 5 tahun pajak terakhir yang belum daluwarsa penetapan pajak sesuai UU KUP, ditambah tahun berjalan.",
-      },
-      {
-        question: "Apakah PrimeTax bersedia menandatangani NDA sebelum kami membagikan ringkasan transaksi?",
-        answer:
-          "Tentu. Untuk seluruh diskusi transaksi korporasi dan M&A, kami siap menandatangani Non-Disclosure Agreement (NDA) sebelum pertukaran informasi.",
+          "Yes, particularly before filing a refund claim or after significant transactions. Audit readiness reviews help identify gaps while there is still time to address them.",
       },
     ],
-    tags: ["tax-planning", "due-diligence", "korporasi", "m-and-a"],
-  },
-  {
-    slug: "tax-health-check",
-    enSlug: "tax-health-check",
-    title: "Tax health check / diagnostic review",
-    enTitle: "Tax health check & diagnostic review",
-    shortDescription:
-      "Simulasi pemeriksaan internal atas kepatuhan PPh Badan, PPh Potput, dan PPN untuk menemukan serta memperbaiki celah risiko sebelum diperiksa DJP.",
-    enShortDescription:
-      "Internal mock-audit of corporate income tax, withholding taxes, and VAT to identify and remediate compliance gaps before a tax office audit.",
-    lead: "Jangan menunggu datangnya SP2DK atau pemeriksaan untuk mengetahui posisi risiko pajak perusahaan Anda. Layanan Tax Health Check kami menguji ekualisasi dan kepatuhan dokumen Anda sebagaimana pemeriksa pajak mengujinya.",
-    enLead:
-      "Don't wait for an SP2DK inquiry or tax audit notice to discover compliance gaps. Our Tax Health Check tests your fiscal equalizations and documentation using the same methodology applied by tax auditors.",
-    icon: "shield-check",
-    segment: "both",
-    ctaMode: "dual",
-    isMvpCore: false,
-    whoFor: [
-      "Perusahaan yang tumbuh pesat dan ingin memastikan administrasi pajaknya siap menghadapi pemeriksaan",
-      "CFO atau Direktur baru yang ingin mengetahui potret kepatuhan pajak historis perusahaan yang dipimpinnya",
-      "Wajib pajak yang akan mengajukan restitusi atau sedang bersiap menutup buku tahunan",
-    ],
-    enWhoFor: [
-      "Fast-growing companies ensuring their tax administration is audit-ready",
-      "Incoming CFOs or Directors seeking an objective baseline of historical tax compliance",
-      "Taxpayers preparing for a major refund claim or annual book closing",
-    ],
-    commonProblems: [
-      {
-        title: "Selisih ekualisasi antara laporan keuangan dan SPT Masa belum pernah diuji",
-        description:
-          "Sistem DJP secara otomatis membandingkan akun biaya di SPT Tahunan dengan objek PPh 21/23/4(2) serta omzet dengan PPN.",
-      },
-      {
-        title: "Biaya dikoreksi fiskal karena bukti potong atau daftar nominatif belum lengkap",
-        description:
-          "Pengeluaran promosi, entertainment, dan reimbursement sering tidak dapat dibiayakan secara fiskal hanya karena lampiran formalnya kurang.",
-      },
-    ],
-    deliverables: [
-      "Kertas kerja ekualisasi menyeluruh (Peredaran Usaha vs PPN; Biaya Gaji vs PPh 21; Biaya Jasa/Sewa vs PPh 23/4(2))",
-      "Laporan temuan risiko (High / Medium / Low) beserta estimasi potensi eksposur pajak dan sanksi",
-      "Rencana aksi perbaikan (remediation plan), termasuk draf pembetulan SPT bila diperlukan",
-      "Sesi presentasi temuan kepada manajemen dan tim finance/akuntansi",
-    ],
-    enDeliverables: [
-      "Comprehensive fiscal equalization working papers across CIT, VAT, and Withholding Taxes",
-      "Risk-ranked diagnostic report (High / Medium / Low) with quantified exposure estimates",
-      "Actionable remediation plan, including amended return drafts where required",
-      "Executive readout session with management and the finance team",
-    ],
-    processSteps: [
-      {
-        step: "Minggu 1: Pengumpulan buku besar, laporan keuangan & SPT",
-        duration: "5 hari kerja",
-        description: "Menerima general ledger (GL), trial balance, SPT Tahunan, dan SPT Masa untuk periode yang diuji.",
-      },
-      {
-        step: "Minggu 2–3: Pengujian ekualisasi & uji petik dokumen (sampling)",
-        duration: "10 hari kerja",
-        description: "Menjalankan pengujian ekualisasi per akun dan memeriksa sampel kontrak/faktur bernilai material.",
-      },
-      {
-        step: "Minggu 4: Laporan diagnostik & pendampingan perbaikan",
-        duration: "5 hari kerja",
-        description: "Menyerahkan laporan lengkap dan memandu tim internal memperbaiki administrasi atau melakukan pembetulan SPT.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Berapa lama pengerjaan Tax Health Check untuk 1 tahun pajak?",
-        answer:
-          "Rata-rata 3 hingga 4 minggu kerja sejak data general ledger (GL) dan SPT diterima lengkap.",
-      },
-      {
-        question: "Apakah untuk UKM tersedia versi Tax Health Check yang lebih ringkas?",
-        answer:
-          "Ya. Untuk klien UKM pada Paket Audit Ready, Tax Health Check tahunan sudah termasuk di dalam paket.",
-      },
-    ],
-    tags: ["health-check", "diagnostik", "sp2dk", "kepatuhan"],
-  },
-  {
-    slug: "pendirian-usaha",
-    enSlug: "company-incorporation-tax-registration",
-    title: "Pendirian usaha & perizinan pajak (PT, PT Perorangan, CV, NPWP & PKP)",
-    enTitle: "Company incorporation & tax registration (PT, CV, NPWP & PKP)",
-    shortDescription:
-      "Pendirian PT Umum, PT Perorangan, atau CV lengkap dengan NIB OSS, pendaftaran NPWP Badan, aktivasi Coretax, dan pengukuhan PKP.",
-    enShortDescription:
-      "Incorporation of standard PT, single-member PT, or CV complete with OSS NIB licensing, Corporate NPWP, Coretax activation, and PKP VAT registration.",
-    lead: "Mulai usaha dengan struktur badan hukum dan administrasi pajak yang benar sejak hari pertama. Kami membantu pemilihan bentuk usaha, pemilihan KBLI yang tepat, hingga aktivasi akun Coretax dan pengukuhan PKP.",
-    enLead:
-      "Start your business with the right legal structure and tax setup from day one. We guide you through entity selection, KBLI classification, Coretax activation, and VAT (PKP) registration.",
-    icon: "building-2",
-    segment: "ukm",
-    ctaMode: "sme",
-    isMvpCore: false,
-    whoFor: [
-      "Founder startup dan pemilik usaha yang ingin meningkatkan status usaha dari perorangan ke PT atau PT Perorangan",
-      "Usaha yang membutuhkan status PKP (Pengusaha Kena Pajak) untuk mengikuti tender korporasi/pemerintah",
-      "Pengusaha yang ingin memastikan pemilihan kode KBLI sesuai dengan rezim perpajakan usahanya",
-    ],
-    enWhoFor: [
-      "Founders and business owners upgrading from sole proprietorship to a PT or Single-Member PT",
-      "Businesses requiring PKP (VAT-registered) status to onboard with corporate or government clients",
-      "Entrepreneurs needing proper KBLI business classification aligned with tax regulations",
-    ],
-    commonProblems: [
-      {
-        title: "Salah memilih KBLI sehingga terkendala saat pengukuhan PKP atau perizinan",
-        description:
-          "Ketidaksesuaian kode KBLI di akta dan NIB dengan kegiatan usaha riil sering menghambat verifikasi lapangan kantor pajak.",
-      },
-      {
-        title: "Sudah punya akta PT dan NPWP tetapi bingung kewajiban pajak bulan pertama",
-        description:
-          "Begitu NPWP Badan terbit, kewajiban administrasi pajak mulai berjalan meskipun perusahaan belum mencatatkan penjualan.",
-      },
-    ],
-    deliverables: [
-      "Konsultasi pemilihan bentuk badan usaha (PT Umum vs PT Perorangan vs CV) dan simulasi beban pajak",
-      "Pengurusan Akta Notaris & SK Kemenkumham (melalui rekanan notaris resmi) serta NIB OSS RBA",
-      "Pendaftaran NPWP Badan, aktivasi akun Coretax perusahaan, dan pengaturan kuasa/PIC pajak",
-      "Pengajuan Pengukuhan PKP dan pendampingan verifikasi kantor pajak",
-      "Panduan onboarding kewajiban pajak bulan pertama untuk tim Anda",
-    ],
-    enDeliverables: [
-      "Entity structure consultation (PT vs. Single-Member PT vs. CV) and tax burden simulation",
-      "Notarial Deed, Ministry of Law approval, and OSS RBA Business Identification Number (NIB)",
-      "Corporate NPWP registration, Coretax account activation, and PIC role configuration",
-      "PKP (VAT) registration filing and tax office verification support",
-      "First-month tax compliance onboarding guide for your team",
-    ],
-    processSteps: [
-      {
-        step: "Hari 1–2: Konsultasi struktur, KBLI & pengecekan nama",
-        duration: "1–2 hari kerja",
-        description: "Menentukan bentuk usaha, modal dasar/disetor, susunan pengurus, dan kode KBLI yang tepat.",
-      },
-      {
-        step: "Hari 3–7: Penerbitan Akta, SK, NPWP & NIB",
-        duration: "3–5 hari kerja",
-        description: "Penandatanganan akta, pengesahan SK Kemenkumham, penerbitan NPWP Badan, dan NIB OSS.",
-      },
-      {
-        step: "Minggu 2–3: Aktivasi Coretax & Pengukuhan PKP",
-        duration: "5–10 hari kerja",
-        description: "Mengatur akses Coretax perusahaan dan mendampingi proses pengukuhan PKP hingga siap menerbitkan faktur.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Apa bedanya PT Perorangan dengan PT biasa dari sisi pajak?",
-        answer:
-          "PT Perorangan didirikan oleh 1 orang dan memenuhi kriteria usaha mikro dan kecil. Dari sisi pajak, PT Perorangan tetap merupakan subjek pajak badan yang berhak memanfaatkan tarif PPh Final UMKM 0,5% (selama memenuhi syarat omzet ≤ Rp 4,8 miliar dan jangka waktu tertentu) atau fasilitas pengurangan tarif PPh Badan Pasal 31E.",
-      },
-      {
-        question: "Apakah usaha baru dengan omzet di bawah Rp 4,8 miliar boleh langsung mengajukan PKP?",
-        answer:
-          "Boleh. Pengusaha dengan omzet di bawah Rp 4,8 miliar dapat memilih untuk dikukuhkan sebagai PKP secara sukarela, misalnya karena syarat dari pelanggan korporasi.",
-      },
-    ],
-    tags: ["pendirian-pt", "ukm", "pkp", "coretax"],
-  },
-  {
-    slug: "coretax",
-    enSlug: "coretax-readiness-migration",
-    title: "Kesiapan & pendampingan Coretax DJP",
-    enTitle: "Coretax DJP readiness & migration support",
-    shortDescription:
-      "Pendampingan pengaturan akses role/impersonate Coretax, integrasi e-Faktur & e-Bupot Unifikasi, pelatihan staf finance, dan rekonsiliasi buku besar pajak (Taxpayer Ledger).",
-    enShortDescription:
-      "Coretax role/impersonation setup, e-Invoice & unified e-Bupot workflow integration, finance team training, and Taxpayer Ledger reconciliation.",
-    lead: "Sistem Coretax mengintegrasikan seluruh administrasi pendaftaran, e-Faktur, e-Bupot, SPT, dan buku besar wajib pajak (Taxpayer Ledger) dalam satu portal. Kami membantu tim finance Anda bertransisi tanpa gangguan operasional.",
-    enLead:
-      "Indonesia's Coretax system unifies tax registration, e-Invoicing, withholding slips, tax returns, and the Taxpayer Ledger into a single portal. We help your finance team transition smoothly without operational disruption.",
-    icon: "monitor-check",
-    segment: "both",
-    ctaMode: "sme",
-    isMvpCore: false,
-    whoFor: [
-      "Tim finance dan pajak perusahaan yang mengalami kendala teknis atau selisih saldo di Taxpayer Ledger Coretax",
-      "PKP dengan volume faktur tinggi yang perlu menyiapkan format XML/upload massal e-Faktur dan bukti potong di Coretax",
-      "Pemilik UKM yang ingin pengaturan akses wakil/kuasa (impersonate) dan sertifikat elektronik Coretax beres dengan cepat",
-    ],
-    enWhoFor: [
-      "Corporate finance and tax teams resolving discrepancies in the Coretax Taxpayer Ledger",
-      "High-volume PKP businesses configuring bulk XML uploads for Coretax e-Invoices and withholding slips",
-      "SME owners needing streamlined role delegation (impersonation) and digital certificate setup",
-    ],
-    commonProblems: [
-      {
-        title: "Pengaturan otorisasi pengurus & staf (impersonating) belum tepat",
-        description:
-          "Di Coretax, setiap penandatangan dan drafter harus memiliki akun pribadi yang ditautkan dengan peran (role) yang sesuai pada akun badan.",
-      },
-      {
-        title: "Data invoice dan bukti potong dari ERP/software akuntansi gagal terunggah",
-        description:
-          "Perubahan skema XML, kode objek pajak, dan validasi NIK/NPWP 16 digit membutuhkan penyesuaian template kerja.",
-      },
-    ],
-    deliverables: [
-      "Audit kesiapan akun Coretax Badan, pengaturan role pengurus/drafter/signer, dan sertifikat digital",
-      "Template konversi Excel/XML siap pakai untuk unggah massal e-Faktur dan e-Bupot di Coretax",
-      "Rekonsiliasi saldo buku besar pajak (Taxpayer Ledger) dengan catatan akuntansi perusahaan",
-      "Pelatihan praktik langsung (hands-on workshop) untuk staf finance dan pajak Anda",
-    ],
-    enDeliverables: [
-      "Coretax corporate account readiness review, role/impersonation mapping, and digital certificate setup",
-      "Ready-to-use Excel/XML templates for bulk e-Invoice and e-Bupot uploads",
-      "Taxpayer Ledger balance reconciliation against internal accounting records",
-      "Hands-on Coretax operational training workshop for your finance and tax staff",
-    ],
-    processSteps: [
-      {
-        step: "Hari 1–3: Diagnostik akun & pemetaan alur transaksi",
-        duration: "2–3 hari kerja",
-        description: "Memeriksa status akses pengurus, sertifikat elektronik, dan memetakan jenis faktur serta bukti potong rutin perusahaan.",
-      },
-      {
-        step: "Hari 4–10: Penyiapan template, SOP & rekonsiliasi ledger",
-        duration: "5–7 hari kerja",
-        description: "Menyesuaikan template unggah data dari sistem akuntansi Anda dan menyamakan saldo Taxpayer Ledger.",
-      },
-      {
-        step: "Pelatihan tim & pendampingan siklus pelaporan pertama",
-        duration: "1 siklus masa pajak",
-        description: "Mendampingi tim Anda secara langsung saat penerbitan faktur, pembuatan kode deposit/billing, dan pelaporan SPT Masa.",
-      },
-    ],
-    faqs: [
-      {
-        question: "Apakah konsultan pajak bisa diberikan akses khusus di dalam Coretax?",
-        answer:
-          "Ya. Sistem Coretax menyediakan fitur penunjukan kuasa/wakil resmi sehingga konsultan yang ditunjuk dapat menyusun draf SPT atau bukti potong, sementara persetujuan akhir dan pembayaran tetap di bawah kendali pengurus perusahaan Anda.",
-      },
-      {
-        question: "Apakah tersedia pelatihan Coretax khusus untuk tim internal perusahaan kami?",
-        answer:
-          "Tersedia. Kami menyelenggarakan pelatihan in-house (online maupun tatap muka) yang langsung menggunakan studi kasus transaksi riil perusahaan Anda.",
-      },
-    ],
-    tags: ["coretax", "e-faktur", "kepatuhan", "ukm", "korporasi"],
+    relatedServices: ["tax-advisory", "transfer-pricing"],
+    relatedInsights: ["responding-to-an-sp2dk", "preparing-for-a-tax-audit-in-indonesia"],
+    seo: {
+      title: "Tax Controversy Indonesia — SP2DK, Tax Audit, Objection & Appeal",
+      description:
+        "Tax controversy support in Indonesia: SP2DK assistance, tax audit preparation, objections, appeals, refund assistance, and dispute strategy.",
+    },
   },
 ];
 
-export function getServiceBySlug(slug: string): ServiceItem | undefined {
-  return services.find((s) => s.slug === slug || s.enSlug === slug);
+export const supportingServices = [
+  {
+    title: "Corporate Tax Compliance Review",
+    description: "Periodic review of filings and reconciliations to identify errors before they become audit issues.",
+  },
+  {
+    title: "Tax Due Diligence",
+    description: "Identification of historical tax exposure in acquisitions, investments, and restructurings.",
+  },
+  {
+    title: "Transaction Tax Advisory",
+    description: "Tax implications of acquisitions, disposals, and group reorganisations.",
+  },
+  {
+    title: "Executive Tax Advisory",
+    description: "Ongoing advisory access for CFOs and finance leadership on emerging tax questions.",
+  },
+  {
+    title: "Tax Intelligence and Training",
+    description: "Regulatory briefings and focused training for finance and tax teams.",
+  },
+];
+
+export function getService(slug: string) {
+  return services.find((s) => s.slug === slug);
 }

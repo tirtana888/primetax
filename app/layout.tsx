@@ -1,63 +1,47 @@
-import type { Metadata } from "next";
-import { brandFont, plexSans, sourceSerif } from "@/app/fonts";
+import type { Metadata, Viewport } from "next";
+import { inter, sourceSerif } from "@/app/fonts";
 import "@/styles/globals.css";
-import { Header } from "@/components/layout/Header";
+import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { Footer } from "@/components/layout/Footer";
-import { FloatingLeadGen } from "@/components/layout/FloatingLeadGen";
-import { PageTransition } from "@/components/layout/PageTransition";
+import { Header } from "@/components/layout/Header";
+import { JsonLd } from "@/components/layout/JsonLd";
 import { site } from "@/config/site";
-import { buildOrganizationSchema } from "@/lib/schema";
+import { organizationSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
-  icons: { icon: "/brand/icon.svg" },
+  metadataBase: new URL(site.url),
   title: {
-    default: `Konsultan Pajak untuk Korporasi & UKM | ${site.brandName}`,
+    default: `${site.brandName} — ${site.tagline} | Strategic Tax Advisory Indonesia`,
     template: `%s | ${site.brandName}`,
   },
-  description:
-    "Konsultan pajak bersertifikat di Indonesia untuk Korporasi/PMA (transfer pricing, SP2DK, pemeriksaan, sengketa) dan UKM/Startup (paket bulanan transparan).",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "id-ID": "/",
-      en: "/en",
-      "x-default": "/",
-    },
-  },
+  description: site.statement,
+  icons: { icon: "/brand/icon.svg" },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
+    url: site.url,
     siteName: site.brandName,
-    title: `Konsultan Pajak untuk Korporasi & UKM | ${site.brandName}`,
-    description:
-      "Pajak bisnis Anda ditangani dengan jelas, tepat waktu, dan siap diperiksa.",
+    title: `${site.brandName} — ${site.tagline}`,
+    description: site.statement,
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="id"
-      className={`${plexSans.variable} ${sourceSerif.variable} ${brandFont.variable}`}
-    >
-      <body className="flex min-h-screen flex-col bg-white font-body text-ink-900 antialiased">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildOrganizationSchema()),
-          }}
-        />
+    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
+      <body className="flex min-h-screen flex-col antialiased">
+        <JsonLd data={organizationSchema()} />
         <Header />
         <main id="main" className="flex-1">
-          <PageTransition>{children}</PageTransition>
+          {children}
         </main>
         <Footer />
-        <FloatingLeadGen />
+        <ConsentBanner />
       </body>
     </html>
   );

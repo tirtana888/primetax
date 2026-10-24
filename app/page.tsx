@@ -1,356 +1,211 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  FileLock2,
-  ShieldCheck,
-  UserCheck,
-} from "lucide-react";
-import { HeroVideo } from "@/components/blocks/HeroVideo";
-import { SectorStrip } from "@/components/blocks/SectorStrip";
-import { PathCards } from "@/components/blocks/PathCards";
-import { TrustStrip } from "@/components/blocks/TrustStrip";
-import { ServiceGrid } from "@/components/blocks/ServiceGrid";
-import { ProcessTimeline } from "@/components/blocks/ProcessTimeline";
-import { CaseStudyGrid } from "@/components/blocks/CaseStudyGrid";
-import {
-  TestimonialSection,
-  getVisibleTestimonials,
-} from "@/components/blocks/TestimonialSection";
-import { TeamGrid } from "@/components/blocks/TeamGrid";
-import { InsightGrid } from "@/components/blocks/InsightGrid";
-import { NewsletterSection } from "@/components/blocks/NewsletterSection";
-import { CtaBand } from "@/components/blocks/CtaBand";
-import { Button, WaButton } from "@/components/ui/Button";
-import { filterReady } from "@/lib/content";
+import { ArrowRight } from "lucide-react";
+import { InsightCard, ServiceCard } from "@/components/blocks/Cards";
+import { CtaPanel } from "@/components/blocks/CtaPanel";
+import { ProcessSteps } from "@/components/blocks/ProcessSteps";
+import { RiskMatrix } from "@/components/blocks/RiskMatrix";
+import { ButtonLink } from "@/components/ui/Button";
+import { Section, SectionHeader } from "@/components/ui/Section";
+import { site } from "@/config/site";
+import { getPublishedInsights } from "@/content/insights";
 import { services } from "@/content/services";
-import { caseStudies } from "@/content/case-studies";
-import { teamMembers } from "@/content/team";
-import { insightArticles } from "@/content/insights";
-import { buildProfessionalServiceSchema } from "@/lib/schema";
+
+const challenges = [
+  {
+    title: "Cross-border tax complexity",
+    text: "Payments to affiliates, treaty conditions, and permanent establishment questions that span more than one jurisdiction.",
+  },
+  {
+    title: "Tax exposure and compliance risk",
+    text: "Differences between commercial reporting and tax filings, and positions that rely on interpretation.",
+  },
+  {
+    title: "Transfer pricing requirements",
+    text: "Documentation, benchmarking, and evidence for related-party transactions under current rules.",
+  },
+  {
+    title: "Tax audits and disputes",
+    text: "SP2DK letters, audits, objections, and appeals that require a consistent strategy from the first response.",
+  },
+  {
+    title: "Regulatory change",
+    text: "New regulations and administrative systems that change how existing decisions should be evaluated.",
+  },
+];
+
+const audiences = [
+  {
+    title: "Foreign-invested companies (PMA)",
+    text: "Owners, directors, and CFOs who need Indonesian tax obligations and cross-border implications explained clearly — locally and to regional headquarters.",
+  },
+  {
+    title: "Multinational companies",
+    text: "Indonesian entities of international groups managing related-party transactions, treaty questions, and alignment with global policy.",
+  },
+  {
+    title: "Large taxpayers and corporate groups",
+    text: "Companies of significant size and complexity that need governance, risk visibility, and support with audits — whether or not they are formally administered by a Large Taxpayer Office.",
+  },
+  {
+    title: "Growing companies with complex needs",
+    text: "Indonesian businesses preparing for expansion, foreign investment, restructuring, or acquisition.",
+  },
+];
 
 export default function HomePage() {
-  const coreServices = services.slice(0, 6);
-  const featuredCaseStudies = caseStudies.slice(0, 3);
-  const coreTeam = teamMembers.slice(0, 4);
-  const latestInsights = insightArticles.slice(0, 3);
-  const hasTestimonials = getVisibleTestimonials("all", 3).length > 0;
-  const hasTeam = filterReady(coreTeam, (m) => [m.name]).length > 0;
+  const latest = getPublishedInsights().slice(0, 3);
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildProfessionalServiceSchema()),
-        }}
-      />
-
-      {/* Section 1: Hero — video udara Bundaran HI + overlay navy; satu pesan, dua CTA */}
-      <section className="relative isolate flex min-h-[34rem] items-center overflow-hidden bg-navy-950 text-white md:min-h-[38rem] lg:min-h-[42rem]">
-        <HeroVideo />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-950/95 via-navy-900/80 to-navy-900/35"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-navy-950/70 to-transparent"
-        />
-
-        <div className="container-site py-16 lg:py-24">
-          <div className="max-w-2xl">
-            <p className="font-heading text-eyebrow uppercase text-emerald-300">
-              Konsultan Pajak Korporasi &amp; UKM
-            </p>
-            <h1 className="mt-4 font-heading text-display font-extrabold text-white">
-              Pajak bisnis Anda, siap diperiksa kapan pun.
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border bg-white">
+        <HeroLines />
+        <div className="container-content relative grid gap-16 py-20 md:py-28 lg:grid-cols-12 lg:items-center lg:py-32">
+          <div className="lg:col-span-7">
+            <p className="eyebrow">Strategic Tax Advisory · Indonesia</p>
+            <h1 className="mt-6 text-display font-semibold">
+              Complex Tax.
+              <br />
+              Clear Decisions.
             </h1>
-            <p className="mt-5 max-w-xl text-lead text-navy-100">
-              Tim konsultan bersertifikat dengan PIC jelas, laporan berkala, dan
-              biaya tertulis sejak awal.
-            </p>
-
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button variant="primary" size="lg" href="/minta-proposal">
-                Minta Proposal
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </Button>
-              <WaButton
-                waContext={{ type: "general" }}
-                ctaLocation="hero"
-                segment="both"
-                size="lg"
-                className="border border-white/30 bg-white/5 backdrop-blur-sm hover:bg-white/15"
-              >
-                Konsultasi via WhatsApp
-              </WaButton>
+            <p className="mt-8 max-w-xl text-lead text-graphite">{site.statement}</p>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <ButtonLink href={site.primaryCta.href} arrow track="hero_primary">
+                {site.primaryCta.label}
+              </ButtonLink>
+              <ButtonLink href="/services" variant="secondary" track="hero_secondary">
+                Explore Our Expertise
+              </ButtonLink>
             </div>
-
-            <p className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 text-body-sm text-navy-100">
-              <ShieldCheck className="h-4 w-4 text-emerald-300" aria-hidden="true" />
-              <span>Bersertifikat BKP A/B/C</span>
-              <span aria-hidden="true" className="text-navy-200/60">•</span>
-              <span>Kuasa Hukum Pajak</span>
-              <span aria-hidden="true" className="text-navy-200/60">•</span>
-              <span>Respons &lt; 1 hari kerja</span>
-            </p>
+          </div>
+          <div className="lg:col-span-5">
+            <div className="rounded-card border border-border bg-white p-6 md:p-8">
+              <div className="flex items-baseline justify-between gap-4 border-b border-border pb-5">
+                <p className="text-sm font-medium">Tax exposure, structured</p>
+                <p className="text-xs text-graphite">Likelihood × impact</p>
+              </div>
+              <RiskMatrix compact className="mt-6" />
+            </div>
           </div>
         </div>
       </section>
 
-      <SectorStrip />
-
-      {/* Section 2: Path Cards — dua jalur dengan identitas visual berbeda */}
-      <section className="section bg-ink-100">
-        <div className="container-site">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="font-heading text-eyebrow uppercase text-emerald-700">
-              Dua Jalur Layanan
-            </p>
-            <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-              Pilih jalur yang sesuai dengan bisnis Anda
-            </h2>
-          </div>
-          <div className="mt-10 lg:mt-12">
-            <PathCards />
-          </div>
+      {/* Business challenges */}
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-12">
+          <SectionHeader
+            className="lg:col-span-5"
+            eyebrow="The challenge"
+            title="Clarity for Complex Tax Matters"
+            intro="PrimeTax helps businesses understand tax exposure, evaluate their options, and make informed decisions."
+          />
+          <ol className="lg:col-span-7">
+            {challenges.map((c, i) => (
+              <li key={c.title} className="grid grid-cols-[3rem_1fr] gap-4 border-t border-border py-7 last:border-b">
+                <span className="text-small tabular-nums text-graphite">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="text-[1.1875rem] font-semibold">{c.title}</h3>
+                  <p className="mt-2 text-graphite">{c.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 3: Trust Strip (§8.3 #3) — Latar navy-900 (Section Navy 1 dari 2) */}
-      <TrustStrip variant="general" />
+      {/* Core expertise */}
+      <Section tone="warm">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <SectionHeader
+            eyebrow="Core expertise"
+            title="Four Practices, One Standard of Analysis"
+            intro="Each engagement begins with the business question, then works through the technical tax issues that affect it."
+          />
+          <ButtonLink href="/services" variant="text" arrow className="shrink-0">
+            All services
+          </ButtonLink>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {services.map((s) => (
+            <ServiceCard key={s.slug} service={s} />
+          ))}
+        </div>
+      </Section>
 
-      {/* Section 4: Layanan (§8.3 #4) — Latar #FFF */}
-      <section className="section bg-white">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-heading text-eyebrow uppercase text-emerald-700">
-                Layanan
-              </p>
-              <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-                Semua kebutuhan pajak bisnis, satu tim.
-              </h2>
-              <p className="mt-3 max-w-2xl text-lead text-ink-600">
-                Mulai dari kepatuhan bulanan di Coretax, dokumentasi Transfer
-                Pricing, hingga pendampingan SP2DK dan persidangan Pengadilan
-                Pajak.
-              </p>
+      {/* Who we serve */}
+      <Section>
+        <SectionHeader eyebrow="Who we serve" title="Built for Executive Decision-Makers" />
+        <div className="mt-12 grid gap-px overflow-hidden rounded-card border border-border bg-border md:grid-cols-2">
+          {audiences.map((a) => (
+            <div key={a.title} className="bg-white p-8 md:p-10">
+              <span className="block h-px w-8 bg-gold" aria-hidden="true" />
+              <h3 className="mt-6 text-h3">{a.title}</h3>
+              <p className="mt-3 text-graphite">{a.text}</p>
             </div>
-            <Link
-              href="/layanan"
-              className="inline-flex items-center gap-1.5 font-heading text-btn-md font-semibold text-emerald-700 no-underline hover:text-emerald-800 hover:underline"
-            >
-              <span>Lihat semua layanan</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          ))}
+        </div>
+        <p className="mt-6 max-w-3xl text-xs text-graphite">
+          &ldquo;Large taxpayers&rdquo; describes companies of significant size and complexity. It is distinct from
+          formal registration at a Large Taxpayer Office (KPP Wajib Pajak Besar), which is an administrative
+          classification by the Directorate General of Taxes.
+        </p>
+      </Section>
+
+      {/* Approach */}
+      <Section tone="warm">
+        <SectionHeader
+          eyebrow="Our approach"
+          title="A Disciplined Four-Step Process"
+          intro="Scope, assumptions, and deliverables are agreed at the outset, so management knows what to expect at each stage."
+        />
+        <div className="mt-12">
+          <ProcessSteps />
+        </div>
+      </Section>
+
+      {/* Insights */}
+      {latest.length > 0 && (
+        <Section>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeader eyebrow="Insights" title="Analysis for Finance Leaders" />
+            <Link href="/insights" className="inline-flex shrink-0 items-center gap-2 text-[0.9375rem] font-medium">
+              View all insights <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
             </Link>
           </div>
-
-          <div className="mt-8 lg:mt-12">
-            <ServiceGrid items={coreServices} featuredFirst mobileRail />
-          </div>
-        </div>
-      </section>
-
-      {/* Section 5: Cara Kami Bekerja (§8.3 #5) — Latar ink-100 */}
-      <section className="section bg-ink-100">
-        <div className="container-site">
-          <div className="max-w-2xl">
-            <p className="font-heading text-eyebrow uppercase text-emerald-700">
-              Transparansi Proses
-            </p>
-            <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-              Cara kami bekerja sejak hari pertama
-            </h2>
-            <p className="mt-3 text-lead text-ink-600">
-              Tanpa tebak-tebakan. Anda selalu mengetahui tahapan kerja, PIC
-              yang bertanggung jawab, dan jadwal penyelesaian dokumen.
-            </p>
-          </div>
-
-          <div className="mt-8 lg:mt-12">
-            <ProcessTimeline
-              steps={[
-                {
-                  title: "Konsultasi awal",
-                  duration: "Hari 1",
-                  description:
-                    "Gratis 30 menit via WhatsApp/online untuk UKM, atau scoping call 45–60 menit (dengan NDA) untuk korporasi.",
-                },
-                {
-                  title: "Diagnostik & pemetaan",
-                  duration: "Minggu 1",
-                  description:
-                    "Kami menelaah surat DJP, laporan keuangan, atau profil transaksi usaha Anda untuk memetakan kebutuhan.",
-                },
-                {
-                  title: "Rencana & penawaran tertulis",
-                  duration: "Minggu 1–2",
-                  description:
-                    "Anda menerima lingkup kerja, jadwal deliverables, dan penawaran biaya yang jelas sebelum pekerjaan dimulai.",
-                },
-                {
-                  title: "Eksekusi & pelaporan rutin",
-                  duration: "Berjalan",
-                  description:
-                    "Pengerjaan dengan cek silang dua lapis, pelaporan tepat sebelum tenggat, dan laporan berkala ke manajemen.",
-                },
-              ]}
-            />
-          </div>
-
-          {/* Kerahasiaan data — pertanyaan pertama tim legal/procurement korporasi */}
-          <div className="mt-12 grid grid-cols-1 gap-6 rounded-xl border border-ink-200 bg-white p-6 sm:grid-cols-3 md:p-8 lg:mt-16">
-            {[
-              {
-                icon: FileLock2,
-                title: "NDA sebelum diskusi",
-                desc: "Perjanjian kerahasiaan ditandatangani sebelum dokumen apa pun dibagikan.",
-              },
-              {
-                icon: UserCheck,
-                title: "Akses dokumen terbatas",
-                desc: "Hanya PIC dan tim yang ditugaskan yang dapat membuka dokumen Anda.",
-              },
-              {
-                icon: ShieldCheck,
-                title: "Sesuai UU PDP",
-                desc: "Data pribadi diproses sesuai UU No. 27/2022 tentang Pelindungan Data Pribadi.",
-              },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex gap-4">
-                <Icon className="mt-0.5 h-6 w-6 shrink-0 text-navy-700" aria-hidden="true" />
-                <div>
-                  <h3 className="font-heading text-h6 font-semibold text-navy-900">{title}</h3>
-                  <p className="mt-1 text-body-sm text-ink-600">{desc}</p>
-                </div>
-              </div>
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
+            {latest.map((insight) => (
+              <InsightCard key={insight.slug} insight={insight} />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Section 6: Studi Kasus Unggulan (§8.3 #6) — Latar #FFF */}
-      <section className="section bg-white">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-heading text-eyebrow uppercase text-emerald-700">
-                Bukti Hasil
-              </p>
-              <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-                Studi kasus dengan hasil terukur
-              </h2>
-              <p className="mt-3 max-w-2xl text-lead text-ink-600">
-                Bagaimana kami mendampingi perusahaan manufaktur, distribusi,
-                PMA, dan UKM menyelesaikan isu perpajakan secara terukur.
-              </p>
-            </div>
-            <Link
-              href="/studi-kasus"
-              className="inline-flex items-center gap-1.5 font-heading text-btn-md font-semibold text-emerald-700 no-underline hover:text-emerald-800 hover:underline"
-            >
-              <span>Lihat semua studi kasus</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-
-          <div className="mt-8 lg:mt-12">
-            <CaseStudyGrid items={featuredCaseStudies} mobileRail />
-          </div>
-        </div>
-      </section>
-
-      {/* Section 7: Testimoni (§8.3 #7) — Latar ink-100; disembunyikan bila belum ada testimoni final */}
-      {hasTestimonials && (
-      <section className="section bg-ink-100">
-        <div className="container-site">
-          <div className="max-w-2xl">
-            <p className="font-heading text-eyebrow uppercase text-emerald-700">
-              Suara Klien
-            </p>
-            <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-              Dipercaya oleh CFO korporasi dan pemilik UKM
-            </h2>
-          </div>
-
-          <div className="mt-8 lg:mt-12">
-            <TestimonialSection segment="all" limit={3} mobileRail />
-          </div>
-        </div>
-      </section>
+        </Section>
       )}
 
-      {/* Section 8: Tim Inti (§8.3 #8) — disembunyikan di produksi sampai profil tim final */}
-      {hasTeam && (
-      <section className="section border-t border-ink-200 bg-white">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-heading text-eyebrow uppercase text-emerald-700">
-                Tim Bersertifikat
-              </p>
-              <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-                Ditangani langsung oleh konsultan berizin resmi
-              </h2>
-              <p className="mt-3 max-w-2xl text-lead text-ink-600">
-                Partner dan manajer kami memegang sertifikasi BKP A/B/C dan Izin
-                Kuasa Hukum Pengadilan Pajak dengan pengalaman mendalam.
-              </p>
-            </div>
-            <Link
-              href="/tim"
-              className="inline-flex items-center gap-1.5 font-heading text-btn-md font-semibold text-emerald-700 no-underline hover:text-emerald-800 hover:underline"
-            >
-              <span>Kenali tim kami</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-
-          <div className="mt-8 lg:mt-12">
-            <TeamGrid members={coreTeam} />
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Section 10: Insight + Buletin (digabung) — Latar ink-100 */}
-      <section className="section border-t border-ink-200 bg-ink-100">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-heading text-eyebrow uppercase text-emerald-700">
-                Insight &amp; Regulasi
-              </p>
-              <h2 className="mt-3 font-heading text-h2 font-bold text-navy-900">
-                Update regulasi dan panduan praktis terbaru
-              </h2>
-              <p className="mt-3 max-w-2xl text-lead text-ink-600">
-                Ulasan PMK, PER, dan panduan langkah demi langkah yang ditulis
-                oleh tim konsultan kami.
-              </p>
-            </div>
-            <Link
-              href="/insight"
-              className="inline-flex items-center gap-1.5 font-heading text-btn-md font-semibold text-emerald-700 no-underline hover:text-emerald-800 hover:underline"
-            >
-              <span>Lihat semua artikel</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-
-          <div className="mt-8 lg:mt-12">
-            <InsightGrid articles={latestInsights} mobileRail />
-          </div>
-
-          <div className="mt-10 lg:mt-12">
-            <NewsletterSection />
-          </div>
-        </div>
-      </section>
-
-      {/* Section 12: CTA Band Dual (§8.3 #12) — Latar navy-900 (Section Navy 2 dari 2) */}
-      <CtaBand mode="dual" />
+      <CtaPanel track="home_final" />
     </>
+  );
+}
+
+/** Subtle geometric line pattern behind the hero. */
+function HeroLines() {
+  return (
+    <svg
+      className="pointer-events-none absolute inset-0 h-full w-full text-border"
+      aria-hidden="true"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <pattern id="hero-grid" width="96" height="96" patternUnits="userSpaceOnUse">
+          <path d="M96 0V96M0 96H96" fill="none" stroke="currentColor" strokeWidth="1" />
+        </pattern>
+        <linearGradient id="hero-fade" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0.35" stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="white" stopOpacity="1" />
+        </linearGradient>
+        <mask id="hero-mask">
+          <rect width="100%" height="100%" fill="url(#hero-fade)" />
+        </mask>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hero-grid)" mask="url(#hero-mask)" opacity="0.6" />
+    </svg>
   );
 }
