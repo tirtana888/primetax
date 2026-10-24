@@ -27,7 +27,11 @@ Tailwind's default palette is disabled, so only these colours (plus `error`/`suc
 - Sections: `py-16 md:py-24`, alternating white / warm.
 - Radius: cards 8px (`rounded-card`), buttons 4px (`rounded-button`).
 - Borders instead of shadows. Hairline grids (`gap-px bg-border`) for grouped items.
-- Motion: colour/arrow transitions only, ~200ms; respects reduced motion.
+- Motion (all disabled under `prefers-reduced-motion`):
+  - Page transition: 0.5s fade-and-rise on each navigation (`app/template.tsx`, `.page-enter`).
+  - Section entrance: content below the fold fades and rises 18px into view on scroll. Card grids marked `data-stagger` reveal item by item, 90ms apart (`components/layout/ScrollReveal.tsx`).
+  - Hover: colour and arrow transitions, about 200ms.
+- Homepage hero: full-bleed muted video under a charcoal gradient overlay, white text, `inverse` and `outlineInverse` buttons.
 
 ## Components
 

@@ -3,6 +3,9 @@
  * /solutions/[slug]. Validate each topic with keyword research before launch.
  */
 
+import { landingPagesId } from "@/content/landing-pages.id";
+import type { Locale } from "@/lib/i18n";
+
 export interface LandingPage {
   slug: string;
   eyebrow: string;
@@ -399,6 +402,10 @@ export const landingPages: LandingPage[] = [
   },
 ];
 
-export function getLandingPage(slug: string) {
-  return landingPages.find((p) => p.slug === slug);
+export function getLandingPages(locale: Locale = "en") {
+  return locale === "id" ? landingPagesId : landingPages;
+}
+
+export function getLandingPage(slug: string, locale: Locale = "en") {
+  return getLandingPages(locale).find((p) => p.slug === slug);
 }

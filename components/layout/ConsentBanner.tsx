@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link, useLocale } from "@/components/ui/Link";
 import { site } from "@/config/site";
 import { CONSENT_EVENT, getConsent, setConsent, type CookieConsent } from "@/lib/analytics";
+import { t } from "@/lib/i18n";
 
 const OPEN_EVENT = "primetax-open-consent";
 
@@ -13,6 +14,7 @@ const OPEN_EVENT = "primetax-open-consent";
  */
 export function ConsentBanner() {
   const [visible, setVisible] = useState(false);
+  const d = t(useLocale()).consent;
 
   useEffect(() => {
     const consent = getConsent();
@@ -41,15 +43,14 @@ export function ConsentBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Cookie preferences"
+      aria-label={d.title}
       className="fixed inset-x-4 bottom-4 z-50 rounded-card border border-border bg-white p-6 shadow-[0_8px_30px_rgba(37,37,37,0.08)] md:inset-x-auto md:right-6 md:bottom-6 md:max-w-md"
     >
-      <p className="text-sm font-medium">Cookie preferences</p>
+      <p className="text-sm font-medium">{d.title}</p>
       <p className="mt-2 text-sm text-graphite">
-        We use essential storage to run this site. With your permission we also use analytics cookies to understand
-        how the site is used. See our{" "}
+        {d.textA}{" "}
         <Link href="/privacy-policy" className="underline decoration-gold underline-offset-2">
-          Privacy Policy
+          {d.privacy}
         </Link>
         .
       </p>
@@ -59,24 +60,24 @@ export function ConsentBanner() {
           onClick={() => choose(false)}
           className="h-10 flex-1 rounded-button border border-charcoal text-sm font-medium hover:bg-warm"
         >
-          Essential only
+          {d.essential}
         </button>
         <button
           type="button"
           onClick={() => choose(true)}
           className="h-10 flex-1 rounded-button bg-charcoal text-sm font-medium text-white hover:bg-charcoal-soft"
         >
-          Accept analytics
+          {d.accept}
         </button>
       </div>
     </div>
   );
 }
 
-export function ConsentSettingsLink() {
+export function ConsentSettingsLink({ label }: { label: string }) {
   return (
     <button type="button" className="hover:text-white" onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}>
-      Cookie Settings
+      {label}
     </button>
   );
 }

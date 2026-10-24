@@ -7,6 +7,9 @@
  * are hidden until the capability has been confirmed.
  */
 
+import { servicesId, supportingServicesId } from "@/content/services.id";
+import type { Locale } from "@/lib/i18n";
+
 export type ServiceIcon = "advisory" | "international" | "transfer-pricing" | "controversy";
 
 export interface ServiceCategory {
@@ -580,6 +583,14 @@ export const supportingServices = [
   },
 ];
 
-export function getService(slug: string) {
-  return services.find((s) => s.slug === slug);
+export function getServices(locale: Locale = "en") {
+  return locale === "id" ? servicesId : services;
+}
+
+export function getSupportingServices(locale: Locale = "en") {
+  return locale === "id" ? supportingServicesId : supportingServices;
+}
+
+export function getService(slug: string, locale: Locale = "en") {
+  return getServices(locale).find((s) => s.slug === slug);
 }

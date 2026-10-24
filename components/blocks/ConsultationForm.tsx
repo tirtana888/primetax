@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { ArrowRight, Check, Lock } from "lucide-react";
+import { Link, useLocale } from "@/components/ui/Link";
 import { site } from "@/config/site";
-import { services } from "@/content/services";
+import { getServices } from "@/content/services";
 import { trackEvent } from "@/lib/analytics";
+import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-const areas = [...services.map((s) => s.title), "Other / not sure yet"];
-const contactMethods = ["Email", "Phone call", "Video meeting"];
+const contactMethods = ["email", "phone", "video"] as const;
+type ContactMethod = (typeof contactMethods)[number];
 
 // Free-mail domains are allowed but flagged, since the brief asks for a business email.
 const FREE_MAIL = /@(gmail|yahoo|hotmail|outlook|live|icloud|aol)\./i;
@@ -21,7 +22,11 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [area, setArea] = useState(defaultArea ?? "");
-  const [method, setMethod] = useState(contactMethods[0]);
+  const [method, setMethod] = useState<ContactMethod>("email");
+  const locale = useLocale();
+  const d = t(locale).form;
+  const services = getServices(locale);
+  const areas = [...services.map((s) => s.title), d.otherArea];
   const started = useRef(false);
 
   // Pre-select the area from ?topic=<service-slug> (used by service-page CTAs).
@@ -29,6 +34,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
     const topic = new URLSearchParams(window.location.search).get("topic");
     const match = services.find((s) => s.slug === topic);
     if (match) setArea(match.title);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFirstInput = () => {
@@ -43,13 +49,13 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
     if (data.website) return; // honeypot
 
     const next: Errors = {};
-    if (!data.name?.trim()) next.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email ?? "")) next.email = "Please enter a valid business email.";
-    if (!data.company?.trim()) next.company = "Please enter your company name.";
-    if (!data.jobTitle?.trim()) next.jobTitle = "Please enter your job title.";
-    if (!data.area) next.area = "Please select an area of interest.";
-    if ((data.message ?? "").trim().length < 20) next.message = "Please describe the matter in a few sentences.";
-    if (!data.consent) next.consent = "Please confirm you have read the Privacy Policy.";
+    if (!data.name?.trim()) next.name = d.errors.name;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email ?? "")) next.email = d.errors.email;
+    if (!data.company?.trim()) next.company = d.errors.company;
+    if (!data.jobTitle?.trim()) next.jobTitle = d.errors.jobTitle;
+    if (!data.area) next.area = d.errors.area;
+    if ((data.message ?? "").trim().length < 20) next.message = d.errors.message;
+    if (!data.consent) next.consent = d.errors.consent;
     setErrors(next);
     if (Object.keys(next).length > 0) {
       trackEvent("form_error", { form: source, fields: Object.keys(next).join(",") });
@@ -63,6 +69,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
       jobTitle: data.jobTitle,
       areaOfInterest: data.area,
       preferredContact: data.method,
+      language: locale,
       phone: data.phone || undefined,
       message: data.message,
       source,
@@ -77,7 +84,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
         .map(([k, v]) => `${k}: ${v}`)
         .join("\n");
       window.location.href = `mailto:${site.contact.email}?subject=${encodeURIComponent(
-        `Consultation request — ${data.company}`
+        `${d.mailSubject} — ${data.company}`
       )}&body=${encodeURIComponent(body)}`;
       trackEvent("form_submit", { form: source, area: data.area, delivery: "mailto" });
       setStatus("mailto");
@@ -106,14 +113,12 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
         <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold">
           <Check className="h-5 w-5 text-charcoal" strokeWidth={1.5} aria-hidden="true" />
         </span>
-        <h3 className="mt-6 text-h3">{status === "sent" ? "Thank you. Your request has been received." : "Your email is ready to send."}</h3>
+        <h3 className="mt-6 text-h3">{status === "sent" ? d.sentTitle : d.mailtoTitle}</h3>
         <p className="mt-3 text-graphite">
-          {status === "sent"
-            ? "A member of our team will review your enquiry and contact you using your preferred method to arrange an initial discussion."
-            : `Your email application should have opened with your enquiry pre-filled. Please send it to ${site.contact.email}. If nothing opened, you can email us directly.`}
+          {status === "sent" ? d.sentText : d.mailtoText(site.contact.email)}
         </p>
         <Link href="/insights" className="mt-8 inline-flex items-center gap-2 text-sm font-medium">
-          Read our latest insights <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+          {t(locale).cta.readInsights} <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
         </Link>
       </div>
     );
@@ -127,13 +132,20 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
       className="rounded-card border border-border bg-white p-6 md:p-10"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <Field label="Name" name="name" autoComplete="name" error={errors.name} />
-        <Field label="Business email" name="email" type="email" autoComplete="email" error={errors.email} hintFn={(v) => (FREE_MAIL.test(v) ? "A company email helps us respond faster." : undefined)} />
-        <Field label="Company" name="company" autoComplete="organization" error={errors.company} />
-        <Field label="Job title" name="jobTitle" autoComplete="organization-title" error={errors.jobTitle} />
+        <Field label={d.name} name="name" autoComplete="name" error={errors.name} />
+        <Field
+          label={d.email}
+          name="email"
+          type="email"
+          autoComplete="email"
+          error={errors.email}
+          hintFn={(v) => (FREE_MAIL.test(v) ? d.freeMail : undefined)}
+        />
+        <Field label={d.company} name="company" autoComplete="organization" error={errors.company} />
+        <Field label={d.jobTitle} name="jobTitle" autoComplete="organization-title" error={errors.jobTitle} />
 
         <div className="md:col-span-2">
-          <Label htmlFor="area">Area of interest</Label>
+          <Label htmlFor="area">{d.area}</Label>
           <select
             id="area"
             name="area"
@@ -144,7 +156,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
             className={inputClass(!!errors.area)}
           >
             <option value="" disabled>
-              Select an area
+              {d.selectArea}
             </option>
             {areas.map((a) => (
               <option key={a}>{a}</option>
@@ -154,7 +166,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
         </div>
 
         <div className="md:col-span-2">
-          <Label htmlFor="message">Brief description of the issue</Label>
+          <Label htmlFor="message">{d.message}</Label>
           <textarea
             id="message"
             name="message"
@@ -166,13 +178,12 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
           <FieldError id="message-error" message={errors.message} />
           <p id="message-note" className="mt-2 flex gap-2 text-xs text-graphite">
             <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" strokeWidth={1.5} aria-hidden="true" />
-            Please do not include tax returns, taxpayer identification numbers, financial statements, or other
-            confidential documents. We will arrange a secure channel once an engagement is agreed.
+            {d.messageNote}
           </p>
         </div>
 
         <fieldset className="md:col-span-2">
-          <legend className="mb-3 text-sm font-medium">Preferred contact method</legend>
+          <legend className="mb-3 text-sm font-medium">{d.method}</legend>
           <div className="flex flex-wrap gap-3">
             {contactMethods.map((m) => (
               <label
@@ -190,15 +201,15 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
                   onChange={() => setMethod(m)}
                   className="sr-only"
                 />
-                {m}
+                {d.methods[m]}
               </label>
             ))}
           </div>
         </fieldset>
 
-        {method === "Phone call" && (
+        {method === "phone" && (
           <div className="md:col-span-2">
-            <Field label="Phone number" name="phone" type="tel" autoComplete="tel" />
+            <Field label={d.phone} name="phone" type="tel" autoComplete="tel" />
           </div>
         )}
 
@@ -214,9 +225,9 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
           <label className="flex gap-3 text-sm text-graphite">
             <input type="checkbox" name="consent" className="mt-1 h-4 w-4 shrink-0 accent-charcoal" />
             <span>
-              I agree that PrimeTax may use these details to respond to my enquiry, as described in the{" "}
+              {d.consentA}{" "}
               <Link href="/privacy-policy" className="underline decoration-gold underline-offset-2">
-                Privacy Policy
+                {d.consentLink}
               </Link>
               .
             </span>
@@ -227,7 +238,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
 
       {status === "error" && (
         <p className="mt-6 text-sm text-error" role="alert">
-          Something went wrong while sending your request. Please try again or email{" "}
+          {d.errors.network}{" "}
           <a href={`mailto:${site.contact.email}`} className="underline">
             {site.contact.email}
           </a>
@@ -240,7 +251,7 @@ export function ConsultationForm({ defaultArea, source = "consultation" }: { def
         disabled={status === "submitting"}
         className="mt-8 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-button bg-charcoal px-6 text-[0.9375rem] font-medium text-white transition-colors hover:bg-charcoal-soft disabled:opacity-60 md:w-auto"
       >
-        {status === "submitting" ? "Sending…" : "Submit Request"}
+        {status === "submitting" ? d.sending : d.submit}
         <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
       </button>
     </form>

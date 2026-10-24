@@ -1,10 +1,10 @@
+import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /**
  * Illustrative likelihood × impact matrix showing how tax exposure is framed
  * for management. It contains no client data and is labelled as illustrative.
  */
-const levels = ["Low", "Medium", "High"] as const;
 
 // Shading by combined score: 0–1 low, 2 medium, 3–4 high.
 function shade(likelihood: number, impact: number) {
@@ -14,51 +14,47 @@ function shade(likelihood: number, impact: number) {
   return "bg-warm";
 }
 
-const examples: Record<string, string> = {
-  "2-2": "Intragroup charges",
-  "1-2": "Treaty documents",
-  "2-1": "Reconciliations",
-  "0-1": "Filing timing",
-};
+export function RiskMatrix({ locale, className, compact }: { locale: Locale; className?: string; compact?: boolean }) {
+  const c = t(locale).common;
+  const examples: Record<string, string> = {
+    "2-2": c.riskExamples.intragroup,
+    "1-2": c.riskExamples.treaty,
+    "2-1": c.riskExamples.reconciliations,
+    "0-1": c.riskExamples.timing,
+  };
 
-export function RiskMatrix({ className, compact }: { className?: string; compact?: boolean }) {
   return (
     <figure className={cn("w-full", className)}>
       <div className="flex gap-3">
         <div className="flex w-5 items-center justify-center">
-          <span className="-rotate-90 whitespace-nowrap text-label uppercase text-graphite">Likelihood</span>
+          <span className="-rotate-90 whitespace-nowrap text-label uppercase text-graphite">{c.likelihood}</span>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="grid grid-cols-3 gap-1.5" role="img" aria-label="Illustrative tax risk matrix of likelihood against impact">
+          <div className="grid grid-cols-3 gap-1.5" role="img" aria-label={c.riskMatrixLabel}>
             {[2, 1, 0].map((likelihood) =>
-              [0, 1, 2].map((impact) => {
-                const label = examples[`${likelihood}-${impact}`];
-                return (
-                  <div
-                    key={`${likelihood}-${impact}`}
-                    className={cn(
-                      "flex min-w-0 items-end rounded-[3px] p-2 text-[0.625rem] leading-tight sm:p-2.5 sm:text-[0.6875rem]",
-                      compact ? "aspect-[4/3]" : "aspect-[5/4] md:p-3 md:text-xs",
-                      shade(likelihood, impact)
-                    )}
-                  >
-                    {label}
-                  </div>
-                );
-              })
+              [0, 1, 2].map((impact) => (
+                <div
+                  key={`${likelihood}-${impact}`}
+                  className={cn(
+                    "flex min-w-0 items-end rounded-[3px] p-2 text-[0.625rem] leading-tight sm:p-2.5 sm:text-[0.6875rem]",
+                    compact ? "aspect-[4/3]" : "aspect-[5/4] md:p-3 md:text-xs",
+                    shade(likelihood, impact)
+                  )}
+                >
+                  {examples[`${likelihood}-${impact}`]}
+                </div>
+              ))
             )}
           </div>
           <div className="mt-2 grid grid-cols-3 text-center text-[0.6875rem] text-graphite">
-            {levels.map((l) => (
+            {[c.low, c.medium, c.high].map((l) => (
               <span key={l}>{l}</span>
             ))}
           </div>
-          <p className="mt-1 text-center text-label uppercase text-graphite">Impact</p>
+          <p className="mt-1 text-center text-label uppercase text-graphite">{c.impact}</p>
         </div>
       </div>
-      <figcaption className="mt-4 text-xs text-graphite">
-        Illustrative framework. Actual ratings depend on the facts of each engagement.
-      </figcaption>
+      <figcaption className="mt-4 text-xs text-graphite">{c.illustrative}</figcaption>
     </figure>
   );
 }

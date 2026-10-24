@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n";
+
 export interface Industry {
   slug: string;
   name: string;
@@ -82,3 +84,83 @@ export const industries: Industry[] = [
     services: ["transfer-pricing", "tax-advisory", "tax-controversy"],
   },
 ];
+
+const industriesId: Industry[] = [
+  {
+    slug: "manufacturing",
+    name: "Manufaktur",
+    summary:
+      "Perusahaan manufaktur PMA dengan bahan baku impor, penjualan ekspor, dan teknologi yang dilisensikan dari afiliasi.",
+    issues: [
+      "Harga bahan baku dan barang jadi dengan pihak afiliasi",
+      "Royalti dan imbalan bantuan teknis kepada afiliasi",
+      "Kesiapan restitusi PPN bagi eksportir",
+      "Keterkaitan kepabeanan dan kawasan berikat dengan posisi pajak",
+    ],
+    services: ["transfer-pricing", "international-tax-pma", "tax-controversy"],
+  },
+  {
+    slug: "energy-resources-infrastructure",
+    name: "Energi, Sumber Daya & Infrastruktur",
+    summary: "Proyek padat modal yang melibatkan kontraktor lintas negara, pembiayaan proyek, dan perjanjian jangka panjang.",
+    issues: [
+      "Risiko Bentuk Usaha Tetap bagi kontraktor asing",
+      "PPh potong atas jasa dan bunga lintas negara",
+      "Perbandingan utang dan modal serta struktur pembiayaan",
+      "Tax due diligence untuk akuisisi dan joint venture",
+    ],
+    services: ["international-tax-pma", "tax-advisory", "tax-controversy"],
+  },
+  {
+    slug: "trading-distribution",
+    name: "Perdagangan & Distribusi",
+    summary: "Usaha bervolume tinggi yang sangat bergantung pada rekonsiliasi pembukuan, PPN, dan PPh potong.",
+    issues: [
+      "Ekualisasi peredaran usaha, Faktur Pajak, dan bukti potong",
+      "Perlakuan rabat, diskon, dan biaya promosi",
+      "Karakterisasi distributor dalam transfer pricing",
+      "SP2DK berdasarkan data pihak ketiga",
+    ],
+    services: ["tax-advisory", "transfer-pricing", "tax-controversy"],
+  },
+  {
+    slug: "technology-digital",
+    name: "Teknologi & Layanan Digital",
+    summary: "Usaha dengan lisensi perangkat lunak, layanan cloud, dan transaksi digital lintas negara.",
+    issues: [
+      "Karakterisasi pembayaran perangkat lunak dan layanan digital",
+      "PPN atas pemanfaatan jasa dari luar negeri",
+      "Biaya jasa intragrup dan alokasi biaya",
+      "Penerapan P3B atas pembayaran terkait teknologi",
+    ],
+    services: ["international-tax-pma", "transfer-pricing", "tax-advisory"],
+  },
+  {
+    slug: "financial-services",
+    name: "Jasa Keuangan & Perusahaan Induk",
+    summary: "Struktur holding, pembiayaan intragrup, dan entitas investasi dengan arus penghasilan yang kompleks.",
+    issues: [
+      "Pembebanan bunga dan pembiayaan afiliasi",
+      "Repatriasi dividen dan PPh potong",
+      "Restrukturisasi grup dan pengalihan saham",
+      "Tata kelola pajak lintas entitas",
+    ],
+    services: ["tax-advisory", "international-tax-pma", "transfer-pricing"],
+  },
+  {
+    slug: "consumer-healthcare",
+    name: "Barang Konsumsi & Kesehatan",
+    summary: "Usaha berbasis merek dengan marketing intangibles, rantai pasok regional, dan biaya promosi.",
+    issues: [
+      "Marketing intangibles dan pengaturan royalti",
+      "Pembebanan biaya promosi dan jamuan",
+      "Pengadaan regional dan struktur prinsipal",
+      "Eksposur pemeriksaan atas transaksi bervolume tinggi",
+    ],
+    services: ["transfer-pricing", "tax-advisory", "tax-controversy"],
+  },
+];
+
+export function getIndustries(locale: Locale = "en") {
+  return locale === "id" ? industriesId : industries;
+}

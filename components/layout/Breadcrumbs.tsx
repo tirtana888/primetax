@@ -1,12 +1,15 @@
-import Link from "next/link";
 import { JsonLd } from "@/components/layout/JsonLd";
+import { Link } from "@/components/ui/Link";
+import { localizePath, t, type Locale } from "@/lib/i18n";
 import { breadcrumbSchema } from "@/lib/schema";
 
-export function Breadcrumbs({ items }: { items: { label: string; href: string }[] }) {
-  const trail = [{ label: "Home", href: "/" }, ...items];
+/** `items` use locale-neutral hrefs; links and schema URLs are localised. */
+export function Breadcrumbs({ items, locale }: { items: { label: string; href: string }[]; locale: Locale }) {
+  const d = t(locale);
+  const trail = [{ label: d.nav.home, href: "/" }, ...items];
   return (
-    <nav aria-label="Breadcrumb" className="text-small text-graphite">
-      <JsonLd data={breadcrumbSchema(trail)} />
+    <nav aria-label={d.common.breadcrumb} className="text-small text-graphite">
+      <JsonLd data={breadcrumbSchema(trail.map((i) => ({ ...i, href: localizePath(i.href, locale) })))} />
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {trail.map((item, i) =>
           i === trail.length - 1 ? (

@@ -1,13 +1,13 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/Link";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
- * TEMPORARY typographic logo (Brief §4.4).
+ * PrimeTax logo (Brief §4.4).
  *
- * This is a placeholder, not the final production logo. When the approved
- * artwork is supplied, set `site.logo.src` / `site.logo.srcInverse` in
- * config/site.ts and this component renders the artwork instead.
+ * Renders the supplied artwork from `site.logo` (generated from
+ * assets/brand/primetax-logo-source.png). The typographic wordmark below is
+ * only a fallback for when no artwork is configured.
  */
 
 type Tone = "default" | "inverse";
@@ -44,7 +44,7 @@ export function Logo({
       alt={site.brandName}
       width={site.logo.width}
       height={site.logo.height}
-      className="h-8 w-auto"
+      className={cn("w-auto", inverse ? "h-10" : "h-9")}
     />
   ) : (
     <span className="inline-flex items-center gap-2.5">

@@ -1,15 +1,16 @@
 import { JsonLd } from "@/components/layout/JsonLd";
 import { Accordion } from "@/components/ui/Accordion";
 import { Section } from "@/components/ui/Section";
+import { t, type Locale } from "@/lib/i18n";
 import { faqSchema } from "@/lib/schema";
 
 export function FaqSection({
   items,
-  title = "Frequently Asked Questions",
+  locale,
   tone = "white",
 }: {
   items: { question: string; answer: string }[];
-  title?: string;
+  locale: Locale;
   tone?: "white" | "warm";
 }) {
   if (items.length === 0) return null;
@@ -19,7 +20,7 @@ export function FaqSection({
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="eyebrow">FAQ</p>
-          <h2 className="mt-4 text-h2">{title}</h2>
+          <h2 className="mt-4 text-h2">{t(locale).common.faq}</h2>
         </div>
         <div className="lg:col-span-8">
           <Accordion items={items} />

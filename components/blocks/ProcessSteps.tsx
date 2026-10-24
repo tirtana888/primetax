@@ -1,13 +1,29 @@
-export const defaultProcess = [
-  { title: "Understand", description: "Clarify business context and scope." },
-  { title: "Assess", description: "Review facts, documentation, and relevant regulations." },
-  { title: "Advise", description: "Evaluate options, risks, and recommendations." },
-  { title: "Support", description: "Assist with agreed implementation or ongoing advisory." },
-];
+import type { Locale } from "@/lib/i18n";
 
-export function ProcessSteps({ steps = defaultProcess }: { steps?: { title: string; description: string }[] }) {
+const defaultProcess: Record<Locale, { title: string; description: string }[]> = {
+  en: [
+    { title: "Understand", description: "Clarify business context and scope." },
+    { title: "Assess", description: "Review facts, documentation, and relevant regulations." },
+    { title: "Advise", description: "Evaluate options, risks, and recommendations." },
+    { title: "Support", description: "Assist with agreed implementation or ongoing advisory." },
+  ],
+  id: [
+    { title: "Memahami", description: "Memperjelas konteks bisnis dan ruang lingkup." },
+    { title: "Menilai", description: "Menelaah fakta, dokumen, dan ketentuan yang relevan." },
+    { title: "Memberi Advis", description: "Mengevaluasi opsi, risiko, dan rekomendasi." },
+    { title: "Mendampingi", description: "Membantu implementasi yang disepakati atau advisory berkelanjutan." },
+  ],
+};
+
+export function ProcessSteps({
+  locale,
+  steps = defaultProcess[locale],
+}: {
+  locale: Locale;
+  steps?: { title: string; description: string }[];
+}) {
   return (
-    <ol className="grid gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+    <ol data-stagger className="grid gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, i) => (
         <li key={step.title} className="relative bg-white p-8">
           <div className="flex items-center gap-4">

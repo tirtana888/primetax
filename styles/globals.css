@@ -213,6 +213,38 @@
   }
 }
 
+/* Page transition: a short fade-and-rise when a new page mounts (app/template.tsx). */
+.page-enter {
+  animation: page-enter 0.5s var(--ease-quiet) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Section entrance (components/layout/ScrollReveal.tsx). */
+/* Data attributes (not classes) so React re-renders never strip the state. */
+[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+  transition-property: opacity, transform;
+  transition-duration: 0.8s;
+  transition-timing-function: var(--ease-quiet);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

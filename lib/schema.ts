@@ -1,4 +1,5 @@
 import { site } from "@/config/site";
+import { t } from "@/lib/i18n";
 
 export function organizationSchema() {
   return {
@@ -8,7 +9,9 @@ export function organizationSchema() {
     legalName: site.legalName,
     url: site.url,
     slogan: site.tagline,
-    description: site.statement,
+    logo: `${site.url}/brand/icon-512.png`,
+    description: t("en").statement,
+    knowsLanguage: ["en", "id"],
     areaServed: { "@type": "Country", name: "Indonesia" },
     ...(site.contact.email ? { email: site.contact.email } : {}),
     ...(site.contact.phone ? { telephone: site.contact.phone } : {}),

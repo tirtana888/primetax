@@ -1,7 +1,9 @@
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export function PageHero({
+  locale,
   eyebrow,
   title,
   intro,
@@ -10,6 +12,7 @@ export function PageHero({
   aside,
   className,
 }: {
+  locale: Locale;
   eyebrow?: string;
   title: string;
   intro?: string;
@@ -21,7 +24,7 @@ export function PageHero({
   return (
     <section className={cn("border-b border-border bg-white", className)}>
       <div className="container-content pt-10 pb-16 md:pt-12 md:pb-24">
-        {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+        {breadcrumbs && <Breadcrumbs items={breadcrumbs} locale={locale} />}
         <div className={cn("grid gap-12", aside && "lg:grid-cols-12 lg:items-end")}>
           <div className={cn("max-w-3xl", breadcrumbs && "mt-12 md:mt-16", aside && "lg:col-span-7")}>
             {eyebrow && <p className="eyebrow">{eyebrow}</p>}

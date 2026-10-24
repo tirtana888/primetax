@@ -9,7 +9,17 @@
  * - `reviewer` stays empty until a named, verified reviewer has signed off.
  */
 
-export type InsightType = "Article" | "Regulatory Update" | "Executive Briefing";
+import { insightsId } from "@/content/insights.id";
+import type { Locale } from "@/lib/i18n";
+
+/**
+ * - Tax Bulletin: short, fast note on a new regulation or DGT development (3–5 paragraphs).
+ * - Regulatory Update: structured summary of a new regulation and who it affects.
+ * - Article: longer analysis of a recurring issue.
+ * - Executive Briefing: decision-oriented note for CFOs and boards.
+ */
+export const insightTypes = ["Tax Bulletin", "Regulatory Update", "Article", "Executive Briefing"] as const;
+export type InsightType = (typeof insightTypes)[number];
 
 export type InsightBlock =
   | { type: "p"; text: string }
@@ -283,12 +293,12 @@ export const insights: Insight[] = [
   },
 ];
 
-export function getPublishedInsights() {
-  return insights
+export function getPublishedInsights(locale: Locale = "en") {
+  return (locale === "id" ? insightsId : insights)
     .filter((i) => i.status === "published")
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
-export function getInsight(slug: string) {
-  return insights.find((i) => i.slug === slug && i.status === "published");
+export function getInsight(slug: string, locale: Locale = "en") {
+  return getPublishedInsights(locale).find((i) => i.slug === slug);
 }
