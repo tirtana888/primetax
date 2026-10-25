@@ -6,8 +6,10 @@ Next.js 15 site, exported as static HTML (`out/`) and hosted on Firebase Hosting
 npm install
 npm run dev        # local preview at http://localhost:3000
 npm run build      # static export to out/
-firebase deploy    # publish out/ (after firebase login)
+firebase deploy --only hosting   # publish out/ (after firebase login)
 ```
+
+Hosting: Firebase project `primetax-web` (default in `.firebaserc`), live at https://primetax-web.web.app. The previous site is in project `primetax-infinity-berjaya` (alias `legacy`). The custom domain primetax.id still has to be connected under Hosting → Add custom domain in the `primetax-web` project.
 
 ## Languages (English / Bahasa Indonesia)
 

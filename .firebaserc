@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "primetax-infinity-berjaya"
+    "default": "primetax-web",
+    "legacy": "primetax-infinity-berjaya"
   }
 }
