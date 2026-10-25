@@ -46,7 +46,11 @@ export function IndustryCard({ industry, index, locale }: { industry: Industry; 
   return (
     <article className="flex h-full flex-col rounded-card border border-border bg-white p-8">
       <span className="text-small tabular-nums text-graphite">{String(index + 1).padStart(2, "0")}</span>
-      <h3 className="mt-6 text-h3">{industry.name}</h3>
+      <h3 className="mt-6 text-h3">
+        <Link href={`/industries/${industry.slug}`} className="hover:underline hover:decoration-gold hover:underline-offset-4">
+          {industry.name}
+        </Link>
+      </h3>
       <p className="mt-3 text-graphite">{industry.summary}</p>
       <ul className="mt-6 space-y-2.5 border-t border-border pt-6 text-small">
         {industry.issues.map((issue) => (
@@ -56,7 +60,7 @@ export function IndustryCard({ industry, index, locale }: { industry: Industry; 
           </li>
         ))}
       </ul>
-      <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-8 text-small">
+      <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-8 text-small text-graphite">
         {industry.services.map((slug) => {
           const service = getService(slug, locale);
           return service ? (
@@ -66,6 +70,18 @@ export function IndustryCard({ industry, index, locale }: { industry: Industry; 
           ) : null;
         })}
       </div>
+      <Link
+        href={`/industries/${industry.slug}`}
+        aria-label={`${t(locale).common.learnMore}: ${industry.name}`}
+        className="group mt-8 inline-flex items-center gap-2 border-t border-border pt-6 text-sm font-medium"
+      >
+        {t(locale).common.learnMore}
+        <ArrowRight
+          className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+      </Link>
     </article>
   );
 }

@@ -54,6 +54,7 @@ const en = {
     team: "Our Team",
     contact: "Contact",
     events: "Events & Briefings",
+    taxCalendar: "Tax Calendar",
   },
   cta: {
     book: "Book a Consultation",
@@ -75,6 +76,7 @@ const en = {
   },
   common: {
     explore: "Explore",
+    learnMore: "Learn more",
     skip: "Skip to content",
     openMenu: "Open menu",
     closeMenu: "Close menu",
@@ -212,6 +214,7 @@ const id: Dictionary = {
     team: "Tim Kami",
     contact: "Kontak",
     events: "Acara & Briefing",
+    taxCalendar: "Kalender Pajak",
   },
   cta: {
     book: "Jadwalkan Konsultasi",
@@ -234,6 +237,7 @@ const id: Dictionary = {
   },
   common: {
     explore: "Lihat",
+    learnMore: "Selengkapnya",
     skip: "Langsung ke konten",
     openMenu: "Buka menu",
     closeMenu: "Tutup menu",

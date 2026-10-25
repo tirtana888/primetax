@@ -28,10 +28,10 @@ export function EventCard({ event, past, locale }: { event: PrimeTaxEvent; past?
             </>
           )}
         </p>
-        <h3 className="mt-3 text-[1.25rem] font-semibold leading-snug text-charcoal">{event.title}</h3>
-        <p className="mt-2 max-w-2xl text-small">{event.summary}</p>
+        <h3 className="mt-3 text-[1.25rem] font-semibold leading-snug text-charcoal">{event.title[locale]}</h3>
+        <p className="mt-2 max-w-2xl text-small">{event.summary[locale]}</p>
         <p className="mt-3 text-small text-graphite">
-          {[event.time, event.location].filter(Boolean).join(" · ")}
+          {[event.time, event.location[locale]].filter(Boolean).join(" · ")}
         </p>
       </div>
       {link && (

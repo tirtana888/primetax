@@ -5,6 +5,7 @@ import { CtaPanel } from "@/components/blocks/CtaPanel";
 import { EventCard } from "@/components/blocks/EventCard";
 import { HeroVideo } from "@/components/blocks/HeroVideo";
 import { ProcessSteps } from "@/components/blocks/ProcessSteps";
+import { NextDeadlines } from "@/components/blocks/TaxCalendar";
 import { ButtonLink } from "@/components/ui/Button";
 import { Link } from "@/components/ui/Link";
 import { Section, SectionHeader } from "@/components/ui/Section";
@@ -14,6 +15,7 @@ import { getPublishedInsights } from "@/content/insights";
 import { getServices } from "@/content/services";
 import { t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
+import { calendarRange } from "@/views/TaxCalendarView";
 
 const copy = {
   en: {
@@ -83,6 +85,11 @@ const copy = {
     },
     insights: { eyebrow: "Insights", title: "Analysis for Finance Leaders" },
     events: { eyebrow: "Events & Briefings", title: "Upcoming Sessions" },
+    calendar: {
+      eyebrow: "Tax calendar",
+      title: "Upcoming Tax Deadlines",
+      intro: "Key payment and filing dates for companies in Indonesia.",
+    },
   },
   id: {
     metaTitle: "PrimeTax — Complex Tax. Clear Decisions. | Konsultan Pajak Strategis Indonesia",
@@ -152,6 +159,11 @@ const copy = {
     },
     insights: { eyebrow: "Insights", title: "Analisis untuk Pimpinan Keuangan" },
     events: { eyebrow: "Acara & Briefing", title: "Sesi Mendatang" },
+    calendar: {
+      eyebrow: "Kalender pajak",
+      title: "Tenggat Pajak Terdekat",
+      intro: "Tanggal setor dan lapor utama bagi perusahaan di Indonesia.",
+    },
   },
 };
 
@@ -165,6 +177,7 @@ export function HomeView({ locale }: { locale: Locale }) {
   const d = t(locale);
   const latest = getPublishedInsights(locale).slice(0, 3);
   const { upcoming } = splitEvents();
+  const calendar = calendarRange();
 
   return (
     <>
@@ -258,9 +271,17 @@ export function HomeView({ locale }: { locale: Locale }) {
         </div>
       </Section>
 
+      {/* Upcoming tax deadlines */}
+      <Section>
+        <SectionHeader eyebrow={c.calendar.eyebrow} title={c.calendar.title} intro={c.calendar.intro} />
+        <div className="mt-12">
+          <NextDeadlines deadlines={calendar.deadlines} buildDate={calendar.buildDate} locale={locale} />
+        </div>
+      </Section>
+
       {/* Insights */}
       {latest.length > 0 && (
-        <Section>
+        <Section bordered>
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionHeader eyebrow={c.insights.eyebrow} title={c.insights.title} />
             <Link href="/insights" className="inline-flex shrink-0 items-center gap-2 text-[0.9375rem] font-medium">

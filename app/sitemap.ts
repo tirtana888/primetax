@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 import { events } from "@/content/events";
+import { industries } from "@/content/industries";
 import { getPublishedInsights } from "@/content/insights";
 import { landingPages } from "@/content/landing-pages";
 import { services } from "@/content/services";
@@ -17,7 +18,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...landingPages.map((p) => ({ path: `/solutions/${p.slug}`, priority: 0.8 })),
     { path: "/about", priority: 0.7 },
     { path: "/industries", priority: 0.7 },
+    ...industries.map((i) => ({ path: `/industries/${i.slug}`, priority: 0.7 })),
     { path: "/insights", priority: 0.8 },
+    { path: "/tax-calendar", priority: 0.7 },
     ...getPublishedInsights().map((i) => ({ path: `/insights/${i.slug}`, priority: 0.7, lastModified: i.updatedAt })),
     ...(events.length > 0 ? [{ path: "/events", priority: 0.6 }] : []),
     { path: "/team", priority: 0.5 },

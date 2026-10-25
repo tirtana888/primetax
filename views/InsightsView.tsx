@@ -1,6 +1,7 @@
 import { CtaPanel } from "@/components/blocks/CtaPanel";
 import { InsightsBrowser } from "@/components/blocks/InsightsBrowser";
 import { PageHero } from "@/components/blocks/PageHero";
+import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { getPublishedInsights } from "@/content/insights";
 import { t, type Locale } from "@/lib/i18n";
@@ -40,7 +41,11 @@ export function InsightsView({ locale }: { locale: Locale }) {
         eyebrow="Insights"
         title={c.title}
         intro={c.intro}
-      />
+      >
+        <ButtonLink href="/tax-calendar" variant="secondary" arrow>
+          {t(locale).nav.taxCalendar}
+        </ButtonLink>
+      </PageHero>
       <Section>
         <InsightsBrowser insights={getPublishedInsights(locale)} />
       </Section>

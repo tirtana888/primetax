@@ -37,6 +37,7 @@ export function Footer() {
             <FooterLink href="/about">{d.footer.aboutFirm}</FooterLink>
             <FooterLink href="/industries">{d.nav.industries}</FooterLink>
             <FooterLink href="/insights">{d.nav.insights}</FooterLink>
+            <FooterLink href="/tax-calendar">{d.nav.taxCalendar}</FooterLink>
             <FooterLink href="/team">{d.nav.team}</FooterLink>
             {hasEvents && <FooterLink href="/events">{d.nav.events}</FooterLink>}
             <FooterLink href="/contact">{d.nav.contact}</FooterLink>
